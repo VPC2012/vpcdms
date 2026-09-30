@@ -8,17 +8,24 @@ export default function Operacao() {
   const [peca, setPeca] = useState("Para-choque dianteiro");
   const [defeito, setDefeito] = useState("Amassado");
   const [classificacao, setClassificacao] = useState("Leve");
-  const [necessitaTroca, setNecessitaTroca] =
-    useState("Não");
+  const [necessitaTroca, setNecessitaTroca] = useState("Não");
 
-  const [tempoReparo, setTempoReparo] =
-    useState("");
+  const [tempoReparo, setTempoReparo] = useState("");
 
   const [responsabilidade, setResponsabilidade] =
     useState("Glovis");
 
-  const [observacao, setObservacao] =
-    useState("");
+  const [observacao, setObservacao] = useState("");
+
+  const gerarNumeroOcorrencia = () =>
+    "AV-" +
+    new Date().getFullYear() +
+    "-" +
+    String(Date.now()).slice(-6);
+
+  const [numeroOcorrencia] = useState(
+    gerarNumeroOcorrencia()
+  );
 
   const vin = modelo + serial;
 
@@ -52,71 +59,61 @@ export default function Operacao() {
 
   const turno = calcularTurno();
 
-  const numeroOcorrencia =
-    "AV-" +
-    agora.getFullYear() +
-    "-" +
-    String(
-      Math.floor(Math.random() * 999999)
-    ).padStart(6, "0");
+  const salvarOcorrencia = async () => {
+    const { error } = await supabase
+      .from("ocorrencias")
+      .insert([
+        {
+          numero_ocorrencia:
+            numeroOcorrencia,
 
-  const salvarOcorrencia =
-    async () => {
-      const { error } =
-        await supabase
-          .from("ocorrencias")
-          .insert([
-            {
-              numero_ocorrencia:
-                numeroOcorrencia,
+          data_ocorrencia:
+            dataAtual,
 
-              data_ocorrencia:
-                dataAtual,
+          hora_ocorrencia:
+            horaAtual,
 
-              hora_ocorrencia:
-                horaAtual,
+          modelo,
+          serial,
+          vin,
 
-              modelo: modelo,
-              serial: serial,
-              vin: vin,
+          peca,
+          defeito,
 
-              peca: peca,
-              defeito: defeito,
+          classificacao,
 
-              classificacao:
-                classificacao,
+          necessita_troca:
+            necessitaTroca,
 
-              necessita_troca:
-                necessitaTroca,
+          tempo_reparo:
+            Number(tempoReparo),
 
-              tempo_reparo:
-                Number(
-                  tempoReparo
-                ),
+          responsabilidade,
 
-              responsabilidade:
-                responsabilidade,
+          observacao,
 
-              observacao:
-                observacao,
+          turno,
 
-              turno: turno,
-            },
-          ]);
+          status: "Aberto",
+        },
+      ]);
 
-      if (error) {
-        alert(
-          "Erro ao salvar: " +
-            error.message
-        );
-        console.error(error);
-        return;
-      }
-
+    if (error) {
       alert(
-        "✅ Ocorrência salva com sucesso!"
+        "Erro ao salvar: " +
+          error.message
       );
-    };
+
+      console.error(error);
+      return;
+    }
+
+    alert(
+      "✅ Ocorrência salva com sucesso!"
+    );
+
+    window.location.reload();
+  };
 
   return (
     <div
@@ -271,8 +268,7 @@ export default function Operacao() {
       </select>
 
       <p>
-        Tempo de Reparo
-        (Horas)
+        Tempo de Reparo (Horas)
       </p>
 
       <input
@@ -313,21 +309,24 @@ export default function Operacao() {
       </h3>
 
       <p>
-        Foto 1 -
-        Identificação do Veículo
+        Foto 1 - Identificação
+        do Veículo
       </p>
+
       <input type="file" />
 
       <p>
         Foto 2 - Defeito
         (Visão Geral)
       </p>
+
       <input type="file" />
 
       <p>
         Foto 3 - Defeito
         (Detalhe)
       </p>
+
       <input type="file" />
 
       <hr />
