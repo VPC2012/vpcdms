@@ -6,7 +6,8 @@ const supabaseUrl =
 const supabaseKey =
   "sb_publishable_fnz5kXWVhr6puQbfK2VqBA_VvzrN0fB";
 
-export const supabase = createClient(
-  supabaseUrl,
-  supabaseKey
-);
+export const supabase =
+  createClient(
+    supabaseUrl,
+    supabaseKey
+  );
