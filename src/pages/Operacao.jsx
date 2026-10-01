@@ -20,8 +20,10 @@ export default function Operacao() {
   const [observacao, setObservacao] =
     useState("");
 
-  const [fotoIdentificacao, setFotoIdentificacao] =
-    useState(null);
+  const [
+    fotoIdentificacao,
+    setFotoIdentificacao,
+  ] = useState(null);
 
   const [fotoGeral, setFotoGeral] =
     useState(null);
@@ -71,63 +73,70 @@ export default function Operacao() {
 
   const turno = calcularTurno();
 
-  const salvarOcorrencia =
-    async () => {
-      const { error } =
-        await supabase
-          .from("ocorrencias")
-          .insert([
-            {
-              numero_ocorrencia:
-                numeroOcorrencia,
-
-              data_ocorrencia:
-                dataAtual,
-
-              hora_ocorrencia:
-                horaAtual,
-
-              modelo,
-              serial,
-              vin,
-
-              peca,
-              defeito,
-
-              classificacao,
-
-              necessita_troca:
-                necessitaTroca,
-
-              tempo_reparo:
-                Number(
-                  tempoReparo
-                ),
-
-              responsabilidade,
-
-              observacao,
-
-              turno,
-
-              status: "Aberto",
-            },
-          ]);
-
-      if (error) {
-        alert(
-          "Erro ao salvar: " +
-            error.message
-        );
-        return;
-      }
-
+  const salvarOcorrencia = async () => {
+    if (
+      !fotoIdentificacao ||
+      !fotoGeral ||
+      !fotoDetalhe
+    ) {
       alert(
-        "✅ Ocorrência salva com sucesso!"
+        "As 3 fotos são obrigatórias."
       );
+      return;
+    }
 
-      window.location.reload();
-    };
+    const { error } = await supabase
+      .from("ocorrencias")
+      .insert([
+        {
+          numero_ocorrencia:
+            numeroOcorrencia,
+
+          data_ocorrencia:
+            dataAtual,
+
+          hora_ocorrencia:
+            horaAtual,
+
+          modelo,
+          serial,
+          vin,
+
+          peca,
+          defeito,
+
+          classificacao,
+
+          necessita_troca:
+            necessitaTroca,
+
+          tempo_reparo:
+            Number(tempoReparo),
+
+          responsabilidade,
+
+          observacao,
+
+          turno,
+
+          status: "Aberto",
+        },
+      ]);
+
+    if (error) {
+      alert(
+        "Erro ao salvar: " +
+          error.message
+      );
+      return;
+    }
+
+    alert(
+      "✅ Ocorrência salva com sucesso!"
+    );
+
+    window.location.reload();
+  };
 
   return (
     <div
@@ -169,9 +178,7 @@ export default function Operacao() {
       <select
         value={modelo}
         onChange={(e) =>
-          setModelo(
-            e.target.value
-          )
+          setModelo(e.target.value)
         }
       >
         <option>GHA</option>
@@ -187,9 +194,7 @@ export default function Operacao() {
         maxLength="6"
         value={serial}
         onChange={(e) =>
-          setSerial(
-            e.target.value
-          )
+          setSerial(e.target.value)
         }
       />
 
@@ -206,9 +211,7 @@ export default function Operacao() {
       <select
         value={peca}
         onChange={(e) =>
-          setPeca(
-            e.target.value
-          )
+          setPeca(e.target.value)
         }
       >
         <option>
@@ -243,9 +246,7 @@ export default function Operacao() {
       <select
         value={defeito}
         onChange={(e) =>
-          setDefeito(
-            e.target.value
-          )
+          setDefeito(e.target.value)
         }
       >
         <option>Amassado</option>
@@ -307,9 +308,7 @@ export default function Operacao() {
       <p>Responsabilidade</p>
 
       <select
-        value={
-          responsabilidade
-        }
+        value={responsabilidade}
         onChange={(e) =>
           setResponsabilidade(
             e.target.value
@@ -348,12 +347,11 @@ export default function Operacao() {
       />
 
       {fotoIdentificacao && (
-        {URL.createObjectURL(          alt=""
-          width="200"
-        />
+        <p>
+          ✅ {fotoIdentificacao.name}
+        </p>
       )}
 
-      <br />
       <br />
 
       <p>
@@ -372,12 +370,11 @@ export default function Operacao() {
       />
 
       {fotoGeral && (
-        {URL.createObjectURL(          alt=""
-          width="200"
-        />
+        <p>
+          ✅ {fotoGeral.name}
+        </p>
       )}
 
-      <br />
       <br />
 
       <p>
@@ -396,9 +393,9 @@ export default function Operacao() {
       />
 
       {fotoDetalhe && (
-        {URL.createObjectURL(          alt=""
-          width="200"
-        />
+        <p>
+          ✅ {fotoDetalhe.name}
+        </p>
       )}
 
       <hr />
@@ -420,9 +417,7 @@ export default function Operacao() {
       <br />
 
       <button
-        onClick={
-          salvarOcorrencia
-        }
+        onClick={salvarOcorrencia}
       >
         Salvar Ocorrência
       </button>
