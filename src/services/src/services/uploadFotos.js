@@ -4,21 +4,44 @@ export async function uploadFoto(
   arquivo,
   nomeArquivo
 ) {
-  const { error } =
-    await supabase.storage
-      .from("ocorrencias")
-      .upload(nomeArquivo, arquivo, {
-        upsert: true,
-      });
+  try {
+    const { data, error } =
+      await supabase.storage
+        .from("ocorrencias")
+        .upload(nomeArquivo, arquivo, {
+          upsert: true,
+        });
 
-  if (error) {
+    if (error) {
+      alert(
+        "ERRO STORAGE: " +
+          error.message
+      );
+
+      throw error;
+    }
+
+    const resultado =
+      supabase.storage
+        .from("ocorrencias")
+        .getPublicUrl(
+          nomeArquivo
+        );
+
+    alert(
+      "UPLOAD OK: " +
+        nomeArquivo
+    );
+
+    return resultado.data.publicUrl;
+
+  } catch (error) {
+
+    alert(
+      "ERRO UPLOAD: " +
+        error.message
+    );
+
     throw error;
   }
-
-  const { data } =
-    supabase.storage
-      .from("ocorrencias")
-      .getPublicUrl(nomeArquivo);
-
-  return data.publicUrl;
 }

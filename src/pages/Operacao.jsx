@@ -73,70 +73,28 @@ export default function Operacao() {
 
   const turno = calcularTurno();
 
-  const salvarOcorrencia = async () => {
-    if (
-      !fotoIdentificacao ||
-      !fotoGeral ||
-      !fotoDetalhe
-    ) {
-      alert(
-        "As 3 fotos são obrigatórias."
-      );
-      return;
-    }
-
-    const { error } = await supabase
+const uploadFoto = async (
+  arquivo,
+  nomeArquivo
+) => {
+  const { error } =
+    await supabase.storage
       .from("ocorrencias")
-      .insert([
-        {
-          numero_ocorrencia:
-            numeroOcorrencia,
+      .upload(nomeArquivo, arquivo, {
+        upsert: true,
+      });
 
-          data_ocorrencia:
-            dataAtual,
+  if (error) {
+    throw error;
+  }
 
-          hora_ocorrencia:
-            horaAtual,
+  const { data } =
+    supabase.storage
+      .from("ocorrencias")
+      .getPublicUrl(nomeArquivo);
 
-          modelo,
-          serial,
-          vin,
-
-          peca,
-          defeito,
-
-          classificacao,
-
-          necessita_troca:
-            necessitaTroca,
-
-          tempo_reparo:
-            Number(tempoReparo),
-
-          responsabilidade,
-
-          observacao,
-
-          turno,
-
-          status: "Aberto",
-        },
-      ]);
-
-    if (error) {
-      alert(
-        "Erro ao salvar: " +
-          error.message
-      );
-      return;
-    }
-
-    alert(
-      "✅ Ocorrência salva com sucesso!"
-    );
-
-    window.location.reload();
-  };
+  return data.publicUrl;
+};
 
   return (
     <div
