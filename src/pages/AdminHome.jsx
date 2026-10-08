@@ -9,6 +9,17 @@ export default function AdminHome({ setTela }) {
         textAlign: "center",
       }}
     >
+      <button
+        onClick={() => setTela("portal")}
+        style={{
+          marginBottom: "30px",
+          padding: "10px 20px",
+          cursor: "pointer",
+        }}
+      >
+        ← Voltar ao Portal
+      </button>
+
       <h1>VPCDMS</h1>
 
       <h2>Painel Administrativo</h2>

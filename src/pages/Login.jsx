@@ -1,16 +1,23 @@
 import { useState } from "react";
 
-export default function Login({ setTela }) {
-  const [senha, setSenha] = useState("");
+export default function Login({
+  setTela,
+}) {
+  const [senha, setSenha] =
+    useState("");
 
   const entrar = () => {
-    if (senha === "operacao2026") {
+    if (
+      senha === "operacao2026"
+    ) {
       setTela("operacao");
       return;
     }
 
-    if (senha === "admin2026") {
-      setTela("admin");
+    if (
+      senha === "admin2026"
+    ) {
+      setTela("portal");
       return;
     }
 
@@ -25,21 +32,24 @@ export default function Login({ setTela }) {
         fontFamily: "Arial",
       }}
     >
-      <h1>VPCDMS</h1>
+      <h1>VPC PORTAL</h1>
 
-      <h2>VPC Damage Management System</h2>
-
-      <p>Sistema de Gestão de Avarias VPC</p>
+      <p>
+        Sistema Integrado VPC
+      </p>
 
       <input
         type="password"
         placeholder="Digite a senha"
         value={senha}
-        onChange={(e) => setSenha(e.target.value)}
+        onChange={(e) =>
+          setSenha(
+            e.target.value
+          )
+        }
         style={{
           padding: "10px",
           width: "250px",
-          marginTop: "20px",
         }}
       />
 
@@ -48,10 +58,6 @@ export default function Login({ setTela }) {
 
       <button
         onClick={entrar}
-        style={{
-          padding: "12px 25px",
-          cursor: "pointer",
-        }}
       >
         Entrar
       </button>

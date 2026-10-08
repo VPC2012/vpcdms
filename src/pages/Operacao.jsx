@@ -20,17 +20,7 @@ export default function Operacao() {
   const [observacao, setObservacao] =
     useState("");
 
-  const [
-    fotoIdentificacao,
-    setFotoIdentificacao,
-  ] = useState(null);
-
-  const [fotoGeral, setFotoGeral] =
-    useState(null);
-
-  const [fotoDetalhe, setFotoDetalhe] =
-    useState(null);
-
+  
   const gerarNumeroOcorrencia = () =>
     "AV-" +
     new Date().getFullYear() +
@@ -73,28 +63,61 @@ export default function Operacao() {
 
   const turno = calcularTurno();
 
-const uploadFoto = async (
-  arquivo,
-  nomeArquivo
-) => {
-  const { error } =
-    await supabase.storage
+  const salvarOcorrencia = async () => {
+    
+
+    const { error } = await supabase
       .from("ocorrencias")
-      .upload(nomeArquivo, arquivo, {
-        upsert: true,
-      });
+      .insert([
+        {
+          numero_ocorrencia:
+            numeroOcorrencia,
 
-  if (error) {
-    throw error;
-  }
+          data_ocorrencia:
+            dataAtual,
 
-  const { data } =
-    supabase.storage
-      .from("ocorrencias")
-      .getPublicUrl(nomeArquivo);
+          hora_ocorrencia:
+            horaAtual,
 
-  return data.publicUrl;
-};
+          modelo,
+          serial,
+          vin,
+
+          peca,
+          defeito,
+
+          classificacao,
+
+          necessita_troca:
+            necessitaTroca,
+
+          tempo_reparo:
+            Number(tempoReparo),
+
+          responsabilidade,
+
+          observacao,
+
+          turno,
+
+          status: "Aberto",
+        },
+      ]);
+
+    if (error) {
+      alert(
+        "Erro ao salvar: " +
+          error.message
+      );
+      return;
+    }
+
+    alert(
+      "✅ Ocorrência salva com sucesso!"
+    );
+
+    window.location.reload();
+  };
 
   return (
     <div
@@ -284,81 +307,6 @@ const uploadFoto = async (
       </select>
 
       <hr />
-
-      <h3>
-        Fotos Obrigatórias
-      </h3>
-
-      <p>
-        Foto 1 - Identificação
-      </p>
-
-      <input
-        type="file"
-        accept="image/*"
-        capture="environment"
-        onChange={(e) =>
-          setFotoIdentificacao(
-            e.target.files[0]
-          )
-        }
-      />
-
-      {fotoIdentificacao && (
-        <p>
-          ✅ {fotoIdentificacao.name}
-        </p>
-      )}
-
-      <br />
-
-      <p>
-        Foto 2 - Visão Geral
-      </p>
-
-      <input
-        type="file"
-        accept="image/*"
-        capture="environment"
-        onChange={(e) =>
-          setFotoGeral(
-            e.target.files[0]
-          )
-        }
-      />
-
-      {fotoGeral && (
-        <p>
-          ✅ {fotoGeral.name}
-        </p>
-      )}
-
-      <br />
-
-      <p>
-        Foto 3 - Detalhe
-      </p>
-
-      <input
-        type="file"
-        accept="image/*"
-        capture="environment"
-        onChange={(e) =>
-          setFotoDetalhe(
-            e.target.files[0]
-          )
-        }
-      />
-
-      {fotoDetalhe && (
-        <p>
-          ✅ {fotoDetalhe.name}
-        </p>
-      )}
-
-      <hr />
-
-      <p>Observação</p>
 
       <textarea
         rows="4"
