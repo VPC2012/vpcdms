@@ -3,7 +3,6 @@ import { supabase } from "../services/supabase";
 
 export default function VPCCQEHome({
   setTela,
-  setListaSelecionada,
 }) {
   const [listas, setListas] = useState([]);
 
@@ -27,7 +26,58 @@ export default function VPCCQEHome({
       return;
     }
 
-    setListas(data || []);
+    const listasComResumo =
+      await Promise.all(
+        (data || []).map(
+          async (lista) => {
+            const {
+              data: veiculos,
+            } = await supabase
+              .from(
+                "vpccqe_lista_veiculos"
+              )
+              .select(
+                "inspecionado"
+              )
+              .eq(
+                "lista_id",
+                lista.id
+              );
+
+            const total =
+              veiculos?.length || 0;
+
+            const concluidos =
+              veiculos?.filter(
+                (v) =>
+                  v.inspecionado ===
+                  true
+              ).length || 0;
+
+            const pendentes =
+              total - concluidos;
+
+            const percentual =
+              total > 0
+                ? Math.round(
+                    (concluidos *
+                      100) /
+                      total
+                  )
+                : 0;
+
+            return {
+              ...lista,
+              total,
+              concluidos,
+              pendentes,
+              percentual,
+            };
+          }
+        )
+      );
+
+    setListas(listasComResumo);
   }
 
   return (
@@ -35,6 +85,8 @@ export default function VPCCQEHome({
       style={{
         padding: "30px",
         fontFamily: "Arial",
+        maxWidth: "900px",
+        margin: "0 auto",
       }}
     >
       <button
@@ -47,13 +99,18 @@ export default function VPCCQEHome({
 
       <h1>📋 VPCCQE</h1>
 
+      <h2>
+        Controle de Qualidade
+      </h2>
+
       <hr />
 
       {listas.map((lista) => (
         <div
           key={lista.id}
           onClick={() => {
-            setListaSelecionada(
+            localStorage.setItem(
+              "listaSelecionada",
               lista.id
             );
 
@@ -62,11 +119,16 @@ export default function VPCCQEHome({
             );
           }}
           style={{
-            border: "1px solid #ccc",
-            padding: "15px",
-            marginBottom: "15px",
+            border:
+              "1px solid #ccc",
+            padding: "20px",
+            marginBottom:
+              "15px",
             cursor: "pointer",
-            borderRadius: "8px",
+            borderRadius:
+              "8px",
+            backgroundColor:
+              "#ffffff",
           }}
         >
           <h3>
@@ -74,13 +136,34 @@ export default function VPCCQEHome({
           </h3>
 
           <p>
-            Status:
-            {" "}
-            {lista.status}
+            <strong>
+              Total:
+            </strong>{" "}
+            {lista.total}
+          </p>
+
+          <p>
+            <strong>
+              Concluídos:
+            </strong>{" "}
+            {lista.concluidos}
+          </p>
+
+          <p>
+            <strong>
+              Pendentes:
+            </strong>{" "}
+            {lista.pendentes}
+          </p>
+
+          <p>
+            <strong>
+              Progresso:
+            </strong>{" "}
+            {lista.percentual}%
           </p>
         </div>
       ))}
     </div>
   );
 }
-``

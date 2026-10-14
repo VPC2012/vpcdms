@@ -5,14 +5,18 @@ import Operacao from "./pages/Operacao.jsx";
 import AdminHome from "./pages/AdminHome.jsx";
 import ConsultaOcorrencias from "./pages/ConsultaOcorrencias.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
-import VPCCQEVeiculos from "./pages/VPCCQEVeiculos.jsx";
-
 import Portal from "./pages/Portal.jsx";
+
 import VPCCQEHome from "./pages/VPCCQEHome.jsx";
+import VPCCQEVeiculos from "./pages/VPCCQEVeiculos.jsx";
+import VPCCQEChecklist from "./pages/VPCCQEChecklist.jsx";
 
 function App() {
   const [tela, setTela] =
     useState("login");
+
+  const [listaSelecionada, setListaSelecionada] =
+    useState(null);
 
   if (tela === "operacao") {
     return <Operacao />;
@@ -59,12 +63,24 @@ function App() {
   }
 
   if (tela === "vpccqe-veiculos") {
-  return (
-    <VPCCQEVeiculos
-      setTela={setTela}
-    />
-  );
-}
+    return (
+      <VPCCQEVeiculos
+        setTela={setTela}
+        listaSelecionada={
+          listaSelecionada
+        }
+      />
+    );
+  }
+
+  if (tela === "vpccqe-checklist") {
+    return (
+      <VPCCQEChecklist
+        setTela={setTela}
+      />
+    );
+  }
+
   return (
     <Login setTela={setTela} />
   );

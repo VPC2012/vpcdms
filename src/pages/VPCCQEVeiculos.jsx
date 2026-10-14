@@ -3,7 +3,6 @@ import { supabase } from "../services/supabase";
 
 export default function VPCCQEVeiculos({
   setTela,
-  listaSelecionada,
 }) {
   const [veiculos, setVeiculos] =
     useState([]);
@@ -13,6 +12,11 @@ export default function VPCCQEVeiculos({
   }, []);
 
   async function carregarVeiculos() {
+    const listaId =
+      localStorage.getItem(
+        "listaSelecionada"
+      );
+
     const { data, error } =
       await supabase
         .from(
@@ -21,7 +25,7 @@ export default function VPCCQEVeiculos({
         .select("*")
         .eq(
           "lista_id",
-          listaSelecionada
+          listaId
         )
         .order("vaga", {
           ascending: true,
@@ -68,6 +72,31 @@ export default function VPCCQEVeiculos({
         (veiculo) => (
           <div
             key={veiculo.id}
+            onClick={() => {
+              localStorage.setItem(
+                "vinSelecionado",
+                veiculo.vin
+              );
+
+              localStorage.setItem(
+                "modeloSelecionado",
+                veiculo.modelo
+              );
+
+              localStorage.setItem(
+                "agingSelecionado",
+                veiculo.aging
+              );
+
+              localStorage.setItem(
+                "vagaSelecionada",
+                veiculo.vaga
+              );
+
+              setTela(
+                "vpccqe-checklist"
+              );
+            }}
             style={{
               border:
                 "1px solid #ccc",
@@ -76,6 +105,7 @@ export default function VPCCQEVeiculos({
                 "10px",
               borderRadius:
                 "8px",
+              cursor: "pointer",
             }}
           >
             <p>
@@ -104,6 +134,12 @@ export default function VPCCQEVeiculos({
                 AGING:
               </strong>{" "}
               {veiculo.aging}
+            </p>
+
+            <p>
+              {veiculo.inspecionado
+                ? "✅ Inspecionado"
+                : "⬜ Pendente"}
             </p>
           </div>
         )
