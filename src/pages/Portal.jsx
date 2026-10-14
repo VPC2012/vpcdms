@@ -6,6 +6,10 @@ export default function Portal({
     localStorage.getItem(
       "perfil"
     );
+    console.log(
+  "PERFIL:",
+  perfil
+);
 
   return (
     <div
@@ -18,7 +22,9 @@ export default function Portal({
  <h1>
   ✅ PORTAL NOVO 14/10
 </h1>
-``
+<h2>
+  Perfil: {perfil}
+</h2>
 
       <p>
         Central de Aplicações VPC
