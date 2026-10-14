@@ -10,6 +10,7 @@ import Portal from "./pages/Portal.jsx";
 import VPCCQEHome from "./pages/VPCCQEHome.jsx";
 import VPCCQEVeiculos from "./pages/VPCCQEVeiculos.jsx";
 import VPCCQEChecklist from "./pages/VPCCQEChecklist.jsx";
+import VPCCQEAdmin from "./pages/VPCCQEAdmin.jsx";
 
 function App() {
   const [tela, setTela] =
@@ -61,6 +62,13 @@ function App() {
       />
     );
   }
+  if (tela === "vpccqe-admin") {
+  return (
+    <VPCCQEAdmin
+      setTela={setTela}
+    />
+  );
+}
 
   if (tela === "vpccqe-veiculos") {
     return (
