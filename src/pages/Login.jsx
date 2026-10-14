@@ -1,66 +1,32 @@
-import { useState } from "react";
+const entrar = () => {
 
-export default function Login({
-  setTela,
-}) {
-  const [senha, setSenha] =
-    useState("");
+  if (senha === "operacao2026") {
 
-  const entrar = () => {
-    if (
-      senha === "operacao2026"
-    ) {
-      setTela("operacao");
-      return;
-    }
+    localStorage.setItem(
+      "perfil",
+      "operacao"
+    );
 
-    if (
-      senha === "admin2026"
-    ) {
-      setTela("portal");
-      return;
-    }
+    setTela("portal");
+    return;
+  }
 
-    alert("Senha inválida");
-  };
+  if (senha === "admin2026") {
 
-  return (
-    <div
-      style={{
-        textAlign: "center",
-        paddingTop: "100px",
-        fontFamily: "Arial",
-      }}
-    >
-      <h1>VPC PORTAL</h1>
+    localStorage.setItem(
+      "perfil",
+      "admin"
+    );
 
-      <p>
-        Sistema Integrado VPC
-      </p>
+    alert(
+  localStorage.getItem(
+    "perfil"
+  )
+);
 
-      <input
-        type="password"
-        placeholder="Digite a senha"
-        value={senha}
-        onChange={(e) =>
-          setSenha(
-            e.target.value
-          )
-        }
-        style={{
-          padding: "10px",
-          width: "250px",
-        }}
-      />
+    setTela("portal");
+    return;
+  }
 
-      <br />
-      <br />
-
-      <button
-        onClick={entrar}
-      >
-        Entrar
-      </button>
-    </div>
-  );
-}
+  alert("Senha inválida");
+};
