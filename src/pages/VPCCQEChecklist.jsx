@@ -77,98 +77,116 @@ export default function VPCCQEChecklist({
 }, []);
 
 async function carregarChecklistExistente() {
-  const { data } =
+
+  const { data, error } =
     await supabase
       .from("vpccqe_checklist")
       .select("*")
       .eq("vin", vin)
-      .maybeSingle();
+      .order("id", {
+        ascending: false,
+      })
+      .limit(1);
 
-  if (!data) return;
+  if (error) {
+    console.error(error);
+    return;
+  }
+
+  if (!data || data.length === 0) {
+    return;
+  }
+
+  const registro = data[0];
 
   const texto =
-    data.observacao || "";
+    registro.observacao || "";
 
-  const hmc =
+  const valorHmc =
     texto.match(
-      /HMC:\s*(.*)/
-    )?.[1]?.trim() || "";
+      /HMC:\s*(.*?)\n/
+    )?.[1] || "";
 
-  const soc =
+  const valorSoc =
     texto.match(
-      /SOC:\s*(.*)/
-    )?.[1]?.trim() || "";
+      /SOC:\s*(.*?)\n/
+    )?.[1] || "";
 
-  const dataBat =
+  const valorDataBateria =
     texto.match(
-      /Data Bateria:\s*(.*)/
-    )?.[1]?.trim() || "";
+      /Data Bateria:\s*(.*?)\n/
+    )?.[1] || "";
 
-  const fus =
+  const valorFusivel =
     texto.match(
-      /Fusível:\s*(.*)/
-    )?.[1]?.trim() || "";
+      /Fusível:\s*(.*?)\n/
+    )?.[1] || "Conectado";
 
-  const pneuDI =
+  const valorPneuDI =
     texto.match(
-      /Pneu DI:\s*(.*)/
-    )?.[1]?.trim() || "";
+      /Pneu DI:\s*(.*?)\n/
+    )?.[1] || "";
 
-  const pneuDD =
+  const valorPneuDD =
     texto.match(
-      /Pneu DD:\s*(.*)/
-    )?.[1]?.trim() || "";
+      /Pneu DD:\s*(.*?)\n/
+    )?.[1] || "";
 
-  const pneuTE =
+  const valorPneuTE =
     texto.match(
-      /Pneu TE:\s*(.*)/
-    )?.[1]?.trim() || "";
+      /Pneu TE:\s*(.*?)\n/
+    )?.[1] || "";
 
-  const pneuTD =
+  const valorPneuTD =
     texto.match(
-      /Pneu TD:\s*(.*)/
-    )?.[1]?.trim() || "";
+      /Pneu TD:\s*(.*?)\n/
+    )?.[1] || "";
 
-  const obs =
-    texto.includes("Obs:")
-      ? texto.split("Obs:")[1]
-      : "";
+  const valorObs =
+    texto.match(
+      /Obs:\s*([\s\S]*)/
+    )?.[1] || "";
 
-  setHmc(hmc);
+  setHmc(
+    valorHmc.trim()
+  );
 
-  setSoc(soc);
+  setSoc(
+    valorSoc.trim()
+  );
 
-  setDataBateria(dataBat);
+  setDataBateria(
+    valorDataBateria.trim()
+  );
 
   setFusivel(
-    fus || "Conectado"
+    valorFusivel.trim()
   );
 
   setPneuDianteiroEsquerdo(
-    pneuDI
+    valorPneuDI.trim()
   );
 
   setPneuDianteiroDireito(
-    pneuDD
+    valorPneuDD.trim()
   );
 
   setPneuTraseiroEsquerdo(
-    pneuTE
+    valorPneuTE.trim()
   );
 
   setPneuTraseiroDireito(
-    pneuTD
+    valorPneuTD.trim()
   );
 
   setObservacao(
-    obs?.trim() || ""
+    valorObs.trim()
   );
 
   setDefeito(
-    data.resultado || "Não"
+    registro.resultado || "Não"
   );
 }
-
   const salvarChecklist =
     async () => {
       const listaId =
@@ -176,21 +194,28 @@ async function carregarChecklistExistente() {
           "listaSelecionada"
         );
 
-      const { error } =
-        await supabase
-          .from(
-            "vpccqe_checklist"
-          )
-          .insert([
-            {
-              lista_id: listaId,
+const {
+  data: checklistExistente
+} = await supabase
+  .from("vpccqe_checklist")
+  .select("id")
+  .eq("vin", vin)
+  .order("id", {
+    ascending: false,
+  })
+  .limit(1)
+  .maybeSingle();
 
-              vin: vin,
+let error;
 
-              resultado: defeito,
+const dadosChecklist = {
+  lista_id: listaId,
 
-              observacao:
-                `
+  vin: vin,
+
+  resultado: defeito,
+
+  observacao: `
 HMC: ${hmc}
 
 SOC: ${soc}
@@ -210,8 +235,32 @@ Pneu TD: ${pneuTraseiroDireito}
 Obs:
 ${observacao}
 `,
-            },
-          ]);
+};
+
+if (checklistExistente) {
+
+  ({ error } =
+    await supabase
+      .from(
+        "vpccqe_checklist"
+      )
+      .update(dadosChecklist)
+      .eq(
+        "id",
+        checklistExistente.id
+      ));
+
+} else {
+
+  ({ error } =
+    await supabase
+      .from(
+        "vpccqe_checklist"
+      )
+      .insert([
+        dadosChecklist,
+      ]));
+}
 
       if (error) {
         alert(
