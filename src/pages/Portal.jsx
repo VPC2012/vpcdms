@@ -1,4 +1,12 @@
-export default function Portal({ setTela }) {
+export default function Portal({
+  setTela,
+}) {
+
+  const perfil =
+    localStorage.getItem(
+      "perfil"
+    );
+
   return (
     <div
       style={{
@@ -7,41 +15,107 @@ export default function Portal({ setTela }) {
         fontFamily: "Arial",
       }}
     >
-      <h1>🌐 VPC PORTAL</h1>
+ <h1>
+  ✅ PORTAL NOVO 14/10
+</h1>
+``
 
-      <p>Central de Aplicações VPC</p>
+      <p>
+        Central de Aplicações VPC
+      </p>
 
       <br />
 
-      <div>
-        <button
-          onClick={() => setTela("admin")}
-          style={{
-            width: "350px",
-            height: "100px",
-            fontSize: "22px",
-            marginBottom: "20px",
-            cursor: "pointer",
-          }}
-        >
-          🚗 VPCDMS
-        </button>
-      </div>
+      {perfil === "operacao" && (
+        <>
+          <div>
+            <button
+              onClick={() =>
+                setTela(
+                  "operacao"
+                )
+              }
+              style={{
+                width: "350px",
+                height: "100px",
+                fontSize: "22px",
+                marginBottom:
+                  "20px",
+              }}
+            >
+              🚗 VPCDMS
+              <br />
+              Nova Ocorrência
+            </button>
+          </div>
 
-      <div>
-        <button
-          onClick={() => setTela("vpccqe")}
-          style={{
-            width: "350px",
-            height: "100px",
-            fontSize: "22px",
-            cursor: "pointer",
-          }}
-        >
-          📋 VPCCQE
-        </button>
-      </div>
+          <div>
+            <button
+              onClick={() =>
+                setTela(
+                  "vpccqe"
+                )
+              }
+              style={{
+                width: "350px",
+                height: "100px",
+                fontSize: "22px",
+              }}
+            >
+              📋 VPCCQE
+              <br />
+              Checklist
+            </button>
+          </div>
+        </>
+      )}
+
+      {perfil === "admin" && (
+        <>
+          <div>
+            <button
+              onClick={() =>
+                setTela(
+                  "admin"
+                )
+              }
+              style={{
+                width: "350px",
+                height: "100px",
+                fontSize: "22px",
+                marginBottom:
+                  "20px",
+              }}
+            >
+              🚗 VPCDMS
+              <br />
+              Dashboard /
+              Consulta /
+              Administração
+            </button>
+          </div>
+
+          <div>
+            <button
+              onClick={() =>
+                setTela(
+                  "vpccqe-admin"
+                )
+              }
+              style={{
+                width: "350px",
+                height: "100px",
+                fontSize: "22px",
+              }}
+            >
+              📋 VPCCQE
+              <br />
+              Importar /
+              Exportar
+            </button>
+          </div>
+        </>
+      )}
     </div>
   );
 }
-``
