@@ -1,32 +1,88 @@
-const entrar = () => {
+import { useState } from "react";
 
-  if (senha === "operacao2026") {
+export default function Login({
+  setTela,
+}) {
+  const [senha, setSenha] =
+    useState("");
 
-    localStorage.setItem(
-      "perfil",
-      "operacao"
-    );
+  const entrar = () => {
 
-    setTela("portal");
-    return;
-  }
+    if (
+      senha === "operacao2026"
+    ) {
 
-  if (senha === "admin2026") {
+      localStorage.setItem(
+        "perfil",
+        "operacao"
+      );
 
-    localStorage.setItem(
-      "perfil",
-      "admin"
-    );
+      setTela("portal");
+      return;
+    }
+
+    if (
+      senha === "admin2026"
+    ) {
+
+      localStorage.setItem(
+        "perfil",
+        "admin"
+      );
+
+      setTela("portal");
+      return;
+    }
 
     alert(
-  localStorage.getItem(
-    "perfil"
-  )
-);
+      "Senha inválida"
+    );
+  };
 
-    setTela("portal");
-    return;
-  }
+  return (
+    <div
+      style={{
+        textAlign: "center",
+        paddingTop: "100px",
+        fontFamily: "Arial",
+      }}
+    >
+      <h1>VPC PORTAL</h1>
 
-  alert("Senha inválida");
-};
+      <p>
+        Sistema Integrado VPC
+      </p>
+
+      <input
+        type="password"
+        placeholder="Digite a senha"
+        value={senha}
+        onChange={(e) =>
+          setSenha(
+            e.target.value
+          )
+        }
+        onKeyDown={(e) => {
+          if (
+            e.key === "Enter"
+          ) {
+            entrar();
+          }
+        }}
+        style={{
+          padding: "10px",
+          width: "250px",
+        }}
+      />
+
+      <br />
+      <br />
+
+      <button
+        onClick={entrar}
+      >
+        Entrar
+      </button>
+    </div>
+  );
+}
