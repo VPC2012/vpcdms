@@ -14,7 +14,10 @@ import VPCCQEAdmin from "./pages/VPCCQEAdmin.jsx";
 
 function App() {
   const [tela, setTela] =
-    useState("login");
+  useState("login");
+
+const [perfil, setPerfil] =
+  useState("");
 
   const [listaSelecionada, setListaSelecionada] =
     useState(null);
