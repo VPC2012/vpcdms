@@ -19,12 +19,11 @@ export default function Portal({
         fontFamily: "Arial",
       }}
     >
- <h1>
-  ✅ PORTAL NOVO 14/10
+ 
+<h1>
+  🌐 VPC PORTAL
 </h1>
-<h2>
-  Perfil: {perfil}
-</h2>
+ 
 
       <p>
         Central de Aplicações VPC
