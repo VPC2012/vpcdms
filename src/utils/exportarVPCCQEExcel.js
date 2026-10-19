@@ -117,10 +117,19 @@ if (erroListas) {
     }
   );
 
-  const worksheet =
-    XLSX.utils.json_to_sheet(
-      planilha
-    );
+
+  planilha.sort(
+  (a, b) =>
+    a.LISTA.localeCompare(
+      b.LISTA
+    )
+);
+
+const worksheet =
+  XLSX.utils.json_to_sheet(
+    planilha
+  );
+  
 
   const workbook =
     XLSX.utils.book_new();
