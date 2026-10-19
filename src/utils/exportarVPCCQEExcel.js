@@ -24,6 +24,19 @@ export async function exportarVPCCQEExcel() {
     alert("Erro ao carregar checklist");
     return;
   }
+  const {
+  data: listas,
+  error: erroListas
+} = await supabase
+  .from("vpccqe_listas")
+  .select("*");
+
+if (erroListas) {
+  alert(
+    "Erro ao carregar listas"
+  );
+  return;
+}
 
   const planilha = veiculos.map(
     (veiculo) => {
@@ -41,8 +54,12 @@ export async function exportarVPCCQEExcel() {
 
       return {
 
-        LISTA:
-          veiculo.lista_id,
+       LISTA:
+  listas.find(
+    (l) =>
+      l.id ===
+      veiculo.lista_id
+  )?.nome_lista || "",
 
         MODELO:
           veiculo.modelo,
