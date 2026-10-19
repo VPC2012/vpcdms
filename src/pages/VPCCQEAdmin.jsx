@@ -6,6 +6,10 @@ import {
   exportarVPCCQEExcel
 } from "../utils/exportarVPCCQEExcel";
 
+import {
+  baixarModeloVPCCQE
+} from "../utils/downloadModeloVPCCQE";
+
 export default function VPCCQEAdmin({
   setTela,
 }) {
@@ -187,30 +191,40 @@ export default function VPCCQEAdmin({
 
       <br />
 
-      <button
-        onClick={
-          selecionarArquivo
-        }
-      >
-        📥 Importar Lista
-      </button>
+<button
+  onClick={
+    selecionarArquivo
+  }
+>
+  📥 Importar Lista
+</button>
 
-      <input
-        type="file"
-        accept=".xlsx,.xls"
-        ref={fileInputRef}
-        onChange={
-          importarArquivo
-        }
-        style={{
-          display: "none",
-        }}
-      />
+<input
+  type="file"
+  accept=".xlsx,.xls"
+  ref={fileInputRef}
+  onChange={
+    importarArquivo
+  }
+  style={{
+    display: "none",
+  }}
+/>
 
-      <br />
-      <br />
+<br />
+<br />
 
-     
+<button
+  onClick={
+    baixarModeloVPCCQE
+  }
+>
+  📄 Baixar Modelo
+</button>
+
+<br />
+<br />
+
 <button
   onClick={
     exportarVPCCQEExcel

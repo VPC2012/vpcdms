@@ -24,6 +24,20 @@ export default function Portal({
   🌐 VPC PORTAL
 </h1>
  
+<button
+  onClick={() => {
+    localStorage.clear();
+    setTela("login");
+  }}
+  style={{
+    position: "absolute",
+    top: "20px",
+    right: "20px",
+    padding: "8px 15px",
+  }}
+>
+  🚪 Sair
+</button>
 
       <p>
         Central de Aplicações VPC
