@@ -99,93 +99,46 @@ async function carregarChecklistExistente() {
 
   const registro = data[0];
 
-  const texto =
-    registro.observacao || "";
+ setHmc(
+  registro.hmc || ""
+);
 
-  const valorHmc =
-    texto.match(
-      /HMC:\s*(.*?)\n/
-    )?.[1] || "";
+setSoc(
+  registro.soc?.toString() || ""
+);
 
-  const valorSoc =
-    texto.match(
-      /SOC:\s*(.*?)\n/
-    )?.[1] || "";
+setDataBateria(
+  registro.data_bateria || ""
+);
 
-  const valorDataBateria =
-    texto.match(
-      /Data Bateria:\s*(.*?)\n/
-    )?.[1] || "";
+setFusivel(
+  registro.fusivel || "Conectado"
+);
 
-  const valorFusivel =
-    texto.match(
-      /Fusível:\s*(.*?)\n/
-    )?.[1] || "Conectado";
+setPneuDianteiroEsquerdo(
+  registro.pneu_di?.toString() || ""
+);
 
-  const valorPneuDI =
-    texto.match(
-      /Pneu DI:\s*(.*?)\n/
-    )?.[1] || "";
+setPneuDianteiroDireito(
+  registro.pneu_dd?.toString() || ""
+);
 
-  const valorPneuDD =
-    texto.match(
-      /Pneu DD:\s*(.*?)\n/
-    )?.[1] || "";
+setPneuTraseiroEsquerdo(
+  registro.pneu_te?.toString() || ""
+);
 
-  const valorPneuTE =
-    texto.match(
-      /Pneu TE:\s*(.*?)\n/
-    )?.[1] || "";
+setPneuTraseiroDireito(
+  registro.pneu_td?.toString() || ""
+);
 
-  const valorPneuTD =
-    texto.match(
-      /Pneu TD:\s*(.*?)\n/
-    )?.[1] || "";
+setObservacao(
+  registro.observacao || ""
+);
 
-  const valorObs =
-    texto.match(
-      /Obs:\s*([\s\S]*)/
-    )?.[1] || "";
+setDefeito(
+  registro.resultado || "Não"
+);
 
-  setHmc(
-    valorHmc.trim()
-  );
-
-  setSoc(
-    valorSoc.trim()
-  );
-
-  setDataBateria(
-    valorDataBateria.trim()
-  );
-
-  setFusivel(
-    valorFusivel.trim()
-  );
-
-  setPneuDianteiroEsquerdo(
-    valorPneuDI.trim()
-  );
-
-  setPneuDianteiroDireito(
-    valorPneuDD.trim()
-  );
-
-  setPneuTraseiroEsquerdo(
-    valorPneuTE.trim()
-  );
-
-  setPneuTraseiroDireito(
-    valorPneuTD.trim()
-  );
-
-  setObservacao(
-    valorObs.trim()
-  );
-
-  setDefeito(
-    registro.resultado || "Não"
-  );
 }
   const salvarChecklist =
     async () => {
@@ -215,26 +168,33 @@ const dadosChecklist = {
 
   resultado: defeito,
 
-  observacao: `
-HMC: ${hmc}
+  hmc: hmc,
 
-SOC: ${soc}
+  soc: soc || null,
 
-Data Bateria: ${dataBateria}
+  data_bateria:
+    dataBateria || null,
 
-Fusível: ${fusivel}
+  fusivel: fusivel,
 
-Pneu DI: ${pneuDianteiroEsquerdo}
+  pneu_di:
+    pneuDianteiroEsquerdo || null,
 
-Pneu DD: ${pneuDianteiroDireito}
+  pneu_dd:
+    pneuDianteiroDireito || null,
 
-Pneu TE: ${pneuTraseiroEsquerdo}
+  pneu_te:
+    pneuTraseiroEsquerdo || null,
 
-Pneu TD: ${pneuTraseiroDireito}
+  pneu_td:
+    pneuTraseiroDireito || null,
 
-Obs:
-${observacao}
-`,
+  observacao:
+    observacao,
+
+  data_inspecao:
+    new Date()
+      .toISOString(),
 };
 
 if (checklistExistente) {
