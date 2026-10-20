@@ -170,6 +170,81 @@ export default function VPCCQEAdmin({
       );
     };
 
+const limparBancoGeral =
+  async () => {
+
+    const continuar =
+      window.confirm(
+        "ATENÇÃO\n\nTodos os veículos e checklists serão removidos.\n\nCertifique-se de que o resultado já foi exportado.\n\nDeseja continuar?"
+      );
+
+    if (!continuar) return;
+
+if (!continuar) return;
+
+const confirmar =
+  window.confirm(
+    "CONFIRMAÇÃO FINAL\n\nO banco será limpo.\n\nVeículos: EXCLUÍDOS\nChecklists: EXCLUÍDOS\nListas: RESETADAS\n\nDeseja continuar?"
+  );
+
+if (!confirmar) return;
+
+
+    const {
+      error: erroChecklist,
+    } = await supabase
+      .from(
+        "vpccqe_checklist"
+      )
+      .delete()
+      .gt("id", 0);
+
+    if (erroChecklist) {
+      alert(
+        "Erro ao limpar checklist."
+      );
+      return;
+    }
+
+    const {
+      error: erroVeiculos,
+    } = await supabase
+      .from(
+        "vpccqe_lista_veiculos"
+      )
+      .delete()
+      .gt("id", 0);
+
+    if (erroVeiculos) {
+      alert(
+        "Erro ao limpar veículos."
+      );
+      return;
+    }
+
+    const {
+      error: erroListas,
+    } = await supabase
+      .from(
+        "vpccqe_listas"
+      )
+      .update({
+        status: "Pendente",
+      })
+      .gt("id", 0);
+
+    if (erroListas) {
+      alert(
+        "Erro ao resetar listas."
+      );
+      return;
+    }
+
+    alert(
+      "✅ Banco de dados limpo com sucesso.\n\nImporte uma nova lista para iniciar uma nova campanha."
+    );
+  };
+
   return (
     <div
       style={{
@@ -233,6 +308,25 @@ export default function VPCCQEAdmin({
   📤 Exportar Resultado
 </button>
 
-    </div>
-  );
+<br />
+<br />
+
+<button
+  onClick={
+    limparBancoGeral
+  }
+  style={{
+    backgroundColor: "#c62828",
+    color: "white",
+    padding: "10px",
+    border: "none",
+    cursor: "pointer",
+  }}
+>
+  🗑 Limpar Banco de Dados Geral
+</button>
+
+</div>
+);
+
 }
