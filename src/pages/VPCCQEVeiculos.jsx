@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
-import { supabase } from "../services/supabase";
+import {
+  obterVeiculos,
+} from "../services/cqeOffline";
 
 export default function VPCCQEVeiculos({
   setTela,
@@ -12,33 +14,35 @@ export default function VPCCQEVeiculos({
   }, []);
 
   async function carregarVeiculos() {
+
     const listaId =
-      localStorage.getItem(
-        "listaSelecionada"
+      Number(
+        localStorage.getItem(
+          "listaSelecionada"
+        )
       );
 
-    const { data, error } =
-      await supabase
-        .from(
-          "vpccqe_lista_veiculos"
-        )
-        .select("*")
-        .eq(
-          "lista_id",
-          listaId
-        )
-        .order("vaga", {
-          ascending: true,
-        });
+    const todosVeiculos =
+      await obterVeiculos();
 
-    if (error) {
-      alert(
-        "Erro ao carregar veículos"
-      );
-      return;
-    }
+    const veiculosLista =
+      todosVeiculos
+        .filter(
+          (v) =>
+            Number(
+              v.lista_id
+            ) === listaId
+        )
+        .sort(
+          (a, b) =>
+            a.vaga.localeCompare(
+              b.vaga
+            )
+        );
 
-    setVeiculos(data || []);
+    setVeiculos(
+      veiculosLista
+    );
   }
 
   const concluidos =
@@ -155,6 +159,7 @@ export default function VPCCQEVeiculos({
           <div
             key={veiculo.id}
             onClick={() => {
+
               localStorage.setItem(
                 "vinSelecionado",
                 veiculo.vin
