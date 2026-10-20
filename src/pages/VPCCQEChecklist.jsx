@@ -19,20 +19,15 @@ export default function VPCCQEChecklist({
       "agingSelecionado"
     );
 
-    const vaga =
-  localStorage.getItem(
-    "vagaSelecionada"
-  );
+  const vaga =
+    localStorage.getItem(
+      "vagaSelecionada"
+    );
 
- const dataInspecao =
-  new Date().toLocaleDateString(
-    "pt-BR",
-    {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-    }
-  );
+  const dataInspecao =
+    new Date().toLocaleDateString(
+      "pt-BR"
+    );
 
   const [hmc, setHmc] =
     useState("");
@@ -72,155 +67,172 @@ export default function VPCCQEChecklist({
   const [observacao, setObservacao] =
     useState("");
 
-    useEffect(() => {
-  carregarChecklistExistente();
-}, []);
+  useEffect(() => {
+    carregarChecklistExistente();
+  }, []);
 
-async function carregarChecklistExistente() {
+  async function carregarChecklistExistente() {
 
-  const { data, error } =
-    await supabase
-      .from("vpccqe_checklist")
-      .select("*")
-      .eq("vin", vin)
-      .order("id", {
-        ascending: false,
-      })
-      .limit(1);
+    const { data, error } =
+      await supabase
+        .from("vpccqe_checklist")
+        .select("*")
+        .eq("vin", vin)
+        .order("id", {
+          ascending: false,
+        })
+        .limit(1);
 
-  if (error) {
-    console.error(error);
-    return;
+    if (error) return;
+
+    if (!data || data.length === 0)
+      return;
+
+    const registro =
+      data[0];
+
+    setHmc(
+      registro.hmc || ""
+    );
+
+    setSoc(
+      registro.soc?.toString() ||
+        ""
+    );
+
+    setDataBateria(
+      registro.data_bateria ||
+        ""
+    );
+
+    setFusivel(
+      registro.fusivel ||
+        "Conectado"
+    );
+
+    setPneuDianteiroEsquerdo(
+      registro.pneu_di?.toString() ||
+        ""
+    );
+
+    setPneuDianteiroDireito(
+      registro.pneu_dd?.toString() ||
+        ""
+    );
+
+    setPneuTraseiroEsquerdo(
+      registro.pneu_te?.toString() ||
+        ""
+    );
+
+    setPneuTraseiroDireito(
+      registro.pneu_td?.toString() ||
+        ""
+    );
+
+    setObservacao(
+      registro.observacao ||
+        ""
+    );
+
+    setDefeito(
+      registro.resultado ||
+        "Não"
+    );
   }
 
-  if (!data || data.length === 0) {
-    return;
-  }
-
-  const registro = data[0];
-
- setHmc(
-  registro.hmc || ""
-);
-
-setSoc(
-  registro.soc?.toString() || ""
-);
-
-setDataBateria(
-  registro.data_bateria || ""
-);
-
-setFusivel(
-  registro.fusivel || "Conectado"
-);
-
-setPneuDianteiroEsquerdo(
-  registro.pneu_di?.toString() || ""
-);
-
-setPneuDianteiroDireito(
-  registro.pneu_dd?.toString() || ""
-);
-
-setPneuTraseiroEsquerdo(
-  registro.pneu_te?.toString() || ""
-);
-
-setPneuTraseiroDireito(
-  registro.pneu_td?.toString() || ""
-);
-
-setObservacao(
-  registro.observacao || ""
-);
-
-setDefeito(
-  registro.resultado || "Não"
-);
-
-}
   const salvarChecklist =
     async () => {
+
       const listaId =
         localStorage.getItem(
           "listaSelecionada"
         );
 
-const {
-  data: checklistExistente
-} = await supabase
-  .from("vpccqe_checklist")
-  .select("id")
-  .eq("vin", vin)
-  .order("id", {
-    ascending: false,
-  })
-  .limit(1)
-  .maybeSingle();
+      const {
+        data: checklistExistente,
+      } = await supabase
+        .from(
+          "vpccqe_checklist"
+        )
+        .select("id")
+        .eq("vin", vin)
+        .order("id", {
+          ascending: false,
+        })
+        .limit(1)
+        .maybeSingle();
 
-let error;
+      let error;
 
-const dadosChecklist = {
-  lista_id: listaId,
+      const dadosChecklist = {
+        lista_id: listaId,
 
-  vin: vin,
+        vin: vin,
 
-  resultado: defeito,
+        resultado: defeito,
 
-  hmc: hmc,
+        hmc: hmc,
 
-  soc: soc || null,
+        soc: soc || null,
 
-  data_bateria:
-    dataBateria || null,
+        data_bateria:
+          dataBateria || null,
 
-  fusivel: fusivel,
+        fusivel: fusivel,
 
-  pneu_di:
-    pneuDianteiroEsquerdo || null,
+        pneu_di:
+          pneuDianteiroEsquerdo ||
+          null,
 
-  pneu_dd:
-    pneuDianteiroDireito || null,
+        pneu_dd:
+          pneuDianteiroDireito ||
+          null,
 
-  pneu_te:
-    pneuTraseiroEsquerdo || null,
+        pneu_te:
+          pneuTraseiroEsquerdo ||
+          null,
 
-  pneu_td:
-    pneuTraseiroDireito || null,
+        pneu_td:
+          pneuTraseiroDireito ||
+          null,
 
-  observacao:
-    observacao,
+        observacao:
+          observacao,
 
-  data_inspecao:
-    new Date()
-      .toISOString(),
-};
+        data_inspecao:
+          new Date()
+            .toISOString(),
+      };
 
-if (checklistExistente) {
+      if (
+        checklistExistente
+      ) {
 
-  ({ error } =
-    await supabase
-      .from(
-        "vpccqe_checklist"
-      )
-      .update(dadosChecklist)
-      .eq(
-        "id",
-        checklistExistente.id
-      ));
+        ({ error } =
+          await supabase
+            .from(
+              "vpccqe_checklist"
+            )
+            .update(
+              dadosChecklist
+            )
+            .eq(
+              "id",
+              checklistExistente.id
+            ));
 
-} else {
+      } else {
 
-  ({ error } =
-    await supabase
-      .from(
-        "vpccqe_checklist"
-      )
-      .insert([
-        dadosChecklist,
-      ]));
-}
+        ({ error } =
+          await supabase
+            .from(
+              "vpccqe_checklist"
+            )
+            .insert([
+              dadosChecklist,
+            ]));
+      }
 
       if (error) {
         alert(
@@ -248,18 +260,15 @@ if (checklistExistente) {
     };
 
   return (
-  <div
-    onKeyDown={(e) => {
-      if (e.key === "Enter") {
-        salvarChecklist();
-      }
-    }}
-    tabIndex="0"
-
+    <div
       style={{
-        padding: "30px",
-        fontFamily: "Arial",
-        maxWidth: "900px",
+        padding: "15px",
+        backgroundColor:
+          "#f4f4f4",
+        minHeight: "100vh",
+        fontFamily:
+          "Arial, sans-serif",
+        maxWidth: "700px",
         margin: "0 auto",
       }}
     >
@@ -273,211 +282,262 @@ if (checklistExistente) {
         ← Voltar
       </button>
 
-      <h1>
-        📋 Checklist VPCCQE
+      <h1
+        style={{
+          color: "#002C5F",
+          textAlign: "center",
+        }}
+      >
+        📋 CHECKLIST VPCCQE
       </h1>
 
-      <hr />
-
-      <h3>
-        Dados do Veículo
-      </h3>
-
-      <p>
-        <strong>
-          MODELO:
-        </strong>{" "}
-        {modelo}
-      </p>
-
-      <p>
-        <strong>VIN:</strong>{" "}
-        {vin}
-      </p>
-
-      <p>
-        <strong>
-          AGING:
-        </strong>{" "}
-        {aging}
-      </p>
-
-      <p>
-        <strong>
-          VAGA:
-        </strong>{" "}
-        {vaga}
-      </p>
-
-
-      <p>
-  <strong>
-    DATA DA INSPEÇÃO:
-  </strong>{" "}
-  {dataInspecao}
-</p>
-
-
-      <hr />
-
-      <h3>Inspeção</h3>
-
-      <p>HMC</p>
-
-      <input
-        value={hmc}
-        onChange={(e) =>
-          setHmc(
-            e.target.value
-          )
-        }
-      />
-
-      <p>SOC (%)</p>
-
-      <input
-        value={soc}
-        onChange={(e) =>
-          setSoc(
-            e.target.value
-          )
-        }
-      />
-
-      <p>Data da Bateria</p>
-
-      <input
-        type="date"
-        value={dataBateria}
-        onChange={(e) =>
-          setDataBateria(
-            e.target.value
-          )
-        }
-      />
-
-      <p>
-        Fusível Volumétrico
-      </p>
-
-      <select
-        value={fusivel}
-        onChange={(e) =>
-          setFusivel(
-            e.target.value
-          )
-        }
+      <div
+        style={{
+          background: "#fff",
+          borderRadius: "16px",
+          padding: "20px",
+          marginBottom: "20px",
+          boxShadow:
+            "0 4px 10px rgba(0,0,0,0.10)",
+        }}
       >
-        <option>
-          Conectado
-        </option>
+        <h2>🚗 Dados do Veículo</h2>
 
-        <option>
-          Desconectado
-        </option>
-      </select>
+        <p><strong>Modelo:</strong> {modelo}</p>
 
-      <h3>
-        Pressão dos Pneus
-      </h3>
+        <p><strong>VIN:</strong> {vin}</p>
 
-      <p>
-        Frontal Esquerdo
-      </p>
+        <p><strong>Aging:</strong> {aging}</p>
 
-      <input
-        value={
-          pneuDianteiroEsquerdo
-        }
-        onChange={(e) =>
-          setPneuDianteiroEsquerdo(
-            e.target.value
-          )
-        }
-      />
+        <p><strong>Vaga:</strong> {vaga}</p>
 
-      <p>
-        Frontal Direito
-      </p>
+        <p>
+          <strong>
+            Data da Inspeção:
+          </strong>{" "}
+          {dataInspecao}
+        </p>
+      </div>
 
-      <input
-        value={
-          pneuDianteiroDireito
-        }
-        onChange={(e) =>
-          setPneuDianteiroDireito(
-            e.target.value
-          )
-        }
-      />
-
-      <p>
-        Traseiro Esquerdo
-      </p>
-
-      <input
-        value={
-          pneuTraseiroEsquerdo
-        }
-        onChange={(e) =>
-          setPneuTraseiroEsquerdo(
-            e.target.value
-          )
-        }
-      />
-
-      <p>
-        Traseiro Direito
-      </p>
-
-      <input
-        value={
-          pneuTraseiroDireito
-        }
-        onChange={(e) =>
-          setPneuTraseiroDireito(
-            e.target.value
-          )
-        }
-      />
-
-      <p>Defeitos?</p>
-
-      <select
-        value={defeito}
-        onChange={(e) =>
-          setDefeito(
-            e.target.value
-          )
-        }
+      <div
+        style={{
+          background: "#fff",
+          borderRadius: "16px",
+          padding: "20px",
+          marginBottom: "20px",
+          boxShadow:
+            "0 4px 10px rgba(0,0,0,0.10)",
+        }}
       >
-        <option>Não</option>
-        <option>Sim</option>
-      </select>
+        <h2>🔋 Bateria</h2>
 
-      <p>Observação</p>
+        <p>HMC</p>
 
-      <textarea
-        rows="5"
-        cols="60"
-        value={observacao}
-        onChange={(e) =>
-          setObservacao(
-            e.target.value
-          )
-        }
-      />
+        <input
+          value={hmc}
+          onChange={(e) =>
+            setHmc(
+              e.target.value
+            )
+          }
+          style={{
+            width: "100%",
+          }}
+        />
 
-      <br />
-      <br />
+        <p>SOC (%)</p>
+
+        <input
+          value={soc}
+          onChange={(e) =>
+            setSoc(
+              e.target.value
+            )
+          }
+          style={{
+            width: "100%",
+          }}
+        />
+
+        <p>Data da Bateria</p>
+
+        <input
+          type="date"
+          value={dataBateria}
+          onChange={(e) =>
+            setDataBateria(
+              e.target.value
+            )
+          }
+          style={{
+            width: "100%",
+          }}
+        />
+
+        <p>Fusível</p>
+
+        <select
+          value={fusivel}
+          onChange={(e) =>
+            setFusivel(
+              e.target.value
+            )
+          }
+          style={{
+            width: "100%",
+          }}
+        >
+          <option>
+            Conectado
+          </option>
+
+          <option>
+            Desconectado
+          </option>
+
+          <option>
+            N/A
+          </option>
+        </select>
+      </div>
+
+      <div
+        style={{
+          background: "#fff",
+          borderRadius: "16px",
+          padding: "20px",
+          marginBottom: "20px",
+          boxShadow:
+            "0 4px 10px rgba(0,0,0,0.10)",
+        }}
+      >
+        <h2>🛞 Pressão dos Pneus</h2>
+
+        <p>Pneu DI</p>
+        <input
+          value={
+            pneuDianteiroEsquerdo
+          }
+          onChange={(e) =>
+            setPneuDianteiroEsquerdo(
+              e.target.value
+            )
+          }
+          style={{
+            width: "100%",
+          }}
+        />
+
+        <p>Pneu DD</p>
+        <input
+          value={
+            pneuDianteiroDireito
+          }
+          onChange={(e) =>
+            setPneuDianteiroDireito(
+              e.target.value
+            )
+          }
+          style={{
+            width: "100%",
+          }}
+        />
+
+        <p>Pneu TE</p>
+        <input
+          value={
+            pneuTraseiroEsquerdo
+          }
+          onChange={(e) =>
+            setPneuTraseiroEsquerdo(
+              e.target.value
+            )
+          }
+          style={{
+            width: "100%",
+          }}
+        />
+
+        <p>Pneu TD</p>
+        <input
+          value={
+            pneuTraseiroDireito
+          }
+          onChange={(e) =>
+            setPneuTraseiroDireito(
+              e.target.value
+            )
+          }
+          style={{
+            width: "100%",
+          }}
+        />
+      </div>
+
+      <div
+        style={{
+          background: "#fff",
+          borderRadius: "16px",
+          padding: "20px",
+          marginBottom: "20px",
+          boxShadow:
+            "0 4px 10px rgba(0,0,0,0.10)",
+        }}
+      >
+        <h2>📋 Resultado</h2>
+
+        <p>Defeito?</p>
+
+        <select
+          value={defeito}
+          onChange={(e) =>
+            setDefeito(
+              e.target.value
+            )
+          }
+          style={{
+            width: "100%",
+          }}
+        >
+          <option>
+            Não
+          </option>
+
+          <option>
+            Sim
+          </option>
+        </select>
+
+        <p>Observação</p>
+
+        <textarea
+          rows="5"
+          value={observacao}
+          onChange={(e) =>
+            setObservacao(
+              e.target.value
+            )
+          }
+          style={{
+            width: "100%",
+          }}
+        />
+      </div>
 
       <button
         onClick={
           salvarChecklist
         }
         style={{
-          padding: "12px 20px",
-          fontSize: "16px",
+          width: "100%",
+          background:
+            "#002C5F",
+          color: "#fff",
+          padding: "18px",
+          border: "none",
+          borderRadius: "12px",
+          fontSize: "18px",
+          fontWeight: "bold",
         }}
       >
         ✅ SALVAR CHECKLIST

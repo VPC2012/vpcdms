@@ -3,11 +3,11 @@ import * as XLSX from "xlsx";
 import { supabase } from "../services/supabase";
 
 import {
-  exportarVPCCQEExcel
+  exportarVPCCQEExcel,
 } from "../utils/exportarVPCCQEExcel";
 
 import {
-  baixarModeloVPCCQE
+  baixarModeloVPCCQE,
 } from "../utils/downloadModeloVPCCQE";
 
 export default function VPCCQEAdmin({
@@ -23,7 +23,6 @@ export default function VPCCQEAdmin({
 
   const importarArquivo =
     async (event) => {
-
       const arquivo =
         event.target.files[0];
 
@@ -55,8 +54,6 @@ export default function VPCCQEAdmin({
         return;
       }
 
-      // Limpa veículos atuais
-
       const {
         error: erroDelete,
       } = await supabase
@@ -70,13 +67,8 @@ export default function VPCCQEAdmin({
         alert(
           "Erro ao limpar veículos."
         );
-        console.error(
-          erroDelete
-        );
         return;
       }
-
-      // Busca listas
 
       const {
         data: listas,
@@ -95,55 +87,57 @@ export default function VPCCQEAdmin({
       }
 
       const veiculos =
-        linhas.map((linha) => {
+        linhas.map(
+          (linha) => {
 
-          const numeroLista =
-            String(
-              linha["LISTA"]
-            ).padStart(
-              2,
-              "0"
-            );
+            const numeroLista =
+              String(
+                linha["LISTA"]
+              ).padStart(
+                2,
+                "0"
+              );
 
-          const nomeLista =
-            `Lista ${numeroLista}`;
+            const nomeLista =
+              `Lista ${numeroLista}`;
 
-          const lista =
-            listas.find(
-              (item) =>
-                item.nome_lista ===
-                nomeLista
-            );
+            const lista =
+              listas.find(
+                (item) =>
+                  item.nome_lista ===
+                  nomeLista
+              );
 
-          return {
-            lista_id:
-              lista?.id || null,
+            return {
+              lista_id:
+                lista?.id || null,
 
-            modelo:
-              linha[
-                "Model Code"
-              ],
+              modelo:
+                linha[
+                  "Model Code"
+                ],
 
-            vin:
-              linha[
-                "Vehicle Serial"
-              ],
+              vin:
+                linha[
+                  "Vehicle Serial"
+                ],
 
-            aging:
-              Number(
-                linha["Aging"]
-              ),
+              aging:
+                Number(
+                  linha["Aging"]
+                ),
 
-            vaga:
-              linha["VAGA"],
+              vaga:
+                linha["VAGA"],
 
-            cor:
-              linha["COR"],
+              cor:
+                linha["COR"],
 
-            inspecionado:
-              false,
-          };
-        });
+              inspecionado:
+                false,
+            };
+          }
+        );
 
       const {
         error: erroInsert,
@@ -151,17 +145,14 @@ export default function VPCCQEAdmin({
         .from(
           "vpccqe_lista_veiculos"
         )
-        .insert(veiculos);
+        .insert(
+          veiculos
+        );
 
       if (erroInsert) {
         alert(
           "Erro ao importar veículos."
         );
-
-        console.error(
-          erroInsert
-        );
-
         return;
       }
 
@@ -170,86 +161,100 @@ export default function VPCCQEAdmin({
       );
     };
 
-const limparBancoGeral =
-  async () => {
+  const limparBancoGeral =
+    async () => {
 
-    const continuar =
-      window.confirm(
-        "ATENÇÃO\n\nTodos os veículos e checklists serão removidos.\n\nCertifique-se de que o resultado já foi exportado.\n\nDeseja continuar?"
-      );
+      const continuar =
+        window.confirm(
+          "ATENÇÃO\n\nTodos os veículos e checklists serão removidos.\n\nCertifique-se de que o resultado já foi exportado.\n\nDeseja continuar?"
+        );
 
-    if (!continuar) return;
+      if (!continuar) return;
 
-if (!continuar) return;
+      const confirmar =
+        window.confirm(
+          "CONFIRMAÇÃO FINAL\n\nO banco será limpo.\n\nVeículos: EXCLUÍDOS\nChecklists: EXCLUÍDOS\nListas: RESETADAS\n\nDeseja continuar?"
+        );
 
-const confirmar =
-  window.confirm(
-    "CONFIRMAÇÃO FINAL\n\nO banco será limpo.\n\nVeículos: EXCLUÍDOS\nChecklists: EXCLUÍDOS\nListas: RESETADAS\n\nDeseja continuar?"
-  );
+      if (!confirmar) return;
 
-if (!confirmar) return;
+      const {
+        error: erroChecklist,
+      } = await supabase
+        .from(
+          "vpccqe_checklist"
+        )
+        .delete()
+        .gt("id", 0);
 
+      if (erroChecklist) {
+        alert(
+          "Erro ao limpar checklist."
+        );
+        return;
+      }
 
-    const {
-      error: erroChecklist,
-    } = await supabase
-      .from(
-        "vpccqe_checklist"
-      )
-      .delete()
-      .gt("id", 0);
+      const {
+        error: erroVeiculos,
+      } = await supabase
+        .from(
+          "vpccqe_lista_veiculos"
+        )
+        .delete()
+        .gt("id", 0);
 
-    if (erroChecklist) {
+      if (erroVeiculos) {
+        alert(
+          "Erro ao limpar veículos."
+        );
+        return;
+      }
+
+      const {
+        error: erroListas,
+      } = await supabase
+        .from(
+          "vpccqe_listas"
+        )
+        .update({
+          status: "Pendente",
+        })
+        .gt("id", 0);
+
+      if (erroListas) {
+        alert(
+          "Erro ao resetar listas."
+        );
+        return;
+      }
+
       alert(
-        "Erro ao limpar checklist."
+        "✅ Banco de dados limpo com sucesso.\n\nImporte uma nova lista para iniciar uma nova campanha."
       );
-      return;
-    }
+    };
 
-    const {
-      error: erroVeiculos,
-    } = await supabase
-      .from(
-        "vpccqe_lista_veiculos"
-      )
-      .delete()
-      .gt("id", 0);
-
-    if (erroVeiculos) {
-      alert(
-        "Erro ao limpar veículos."
-      );
-      return;
-    }
-
-    const {
-      error: erroListas,
-    } = await supabase
-      .from(
-        "vpccqe_listas"
-      )
-      .update({
-        status: "Pendente",
-      })
-      .gt("id", 0);
-
-    if (erroListas) {
-      alert(
-        "Erro ao resetar listas."
-      );
-      return;
-    }
-
-    alert(
-      "✅ Banco de dados limpo com sucesso.\n\nImporte uma nova lista para iniciar uma nova campanha."
-    );
+  const estiloBotao = {
+    width: "100%",
+    padding: "18px",
+    borderRadius: "16px",
+    border: "none",
+    marginBottom: "15px",
+    fontSize: "18px",
+    fontWeight: "bold",
+    cursor: "pointer",
   };
 
   return (
     <div
       style={{
-        padding: "30px",
-        fontFamily: "Arial",
+        padding: "15px",
+        backgroundColor:
+          "#f4f4f4",
+        minHeight: "100vh",
+        fontFamily:
+          "Arial, sans-serif",
+        maxWidth: "700px",
+        margin: "0 auto",
       }}
     >
       <button
@@ -260,73 +265,107 @@ if (!confirmar) return;
         ← Voltar
       </button>
 
-      <h1>
-        📋 VPCCQE ADMIN
-      </h1>
+      <div
+        style={{
+          textAlign: "center",
+          marginTop: "15px",
+          marginBottom: "25px",
+        }}
+      >
+        <h1
+          style={{
+            color: "#002C5F",
+            marginBottom: "5px",
+          }}
+        >
+          HYUNDAI
+        </h1>
 
-      <br />
+        <h2
+          style={{
+            margin: 0,
+          }}
+        >
+          VPCCQE ADMIN
+        </h2>
 
-<button
-  onClick={
-    selecionarArquivo
-  }
->
-  📥 Importar Lista
-</button>
+        <p
+          style={{
+            color: "#666",
+            marginTop: "5px",
+          }}
+        >
+          Gestão de Campanhas
+        </p>
+      </div>
 
-<input
-  type="file"
-  accept=".xlsx,.xls"
-  ref={fileInputRef}
-  onChange={
-    importarArquivo
-  }
-  style={{
-    display: "none",
-  }}
-/>
+      <input
+        type="file"
+        accept=".xlsx,.xls"
+        ref={fileInputRef}
+        onChange={
+          importarArquivo
+        }
+        style={{
+          display: "none",
+        }}
+      />
 
-<br />
-<br />
+      <button
+        onClick={
+          selecionarArquivo
+        }
+        style={{
+          ...estiloBotao,
+          backgroundColor:
+            "#002C5F",
+          color: "#fff",
+        }}
+      >
+        📥 IMPORTAR LISTA
+      </button>
 
-<button
-  onClick={
-    baixarModeloVPCCQE
-  }
->
-  📄 Baixar Modelo
-</button>
+      <button
+        onClick={
+          baixarModeloVPCCQE
+        }
+        style={{
+          ...estiloBotao,
+          backgroundColor:
+            "#1976d2",
+          color: "#fff",
+        }}
+      >
+        📄 BAIXAR MODELO
+      </button>
 
-<br />
-<br />
+      <button
+        onClick={
+          exportarVPCCQEExcel
+        }
+        style={{
+          ...estiloBotao,
+          backgroundColor:
+            "#2e7d32",
+          color: "#fff",
+        }}
+      >
+        📤 EXPORTAR RESULTADO
+      </button>
 
-<button
-  onClick={
-    exportarVPCCQEExcel
-  }
->
-  📤 Exportar Resultado
-</button>
-
-<br />
-<br />
-
-<button
-  onClick={
-    limparBancoGeral
-  }
-  style={{
-    backgroundColor: "#c62828",
-    color: "white",
-    padding: "10px",
-    border: "none",
-    cursor: "pointer",
-  }}
->
-  🗑 Limpar Banco de Dados Geral
-</button>
-
-</div>
-);
-
+      <button
+        onClick={
+          limparBancoGeral
+        }
+        style={{
+          ...estiloBotao,
+          backgroundColor:
+            "#c62828",
+          color: "#fff",
+        }}
+      >
+        🗑 LIMPAR BANCO DE DADOS GERAL
+      </button>
+    </div>
+  );
 }

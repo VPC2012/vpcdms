@@ -41,11 +41,34 @@ export default function VPCCQEVeiculos({
     setVeiculos(data || []);
   }
 
+  const concluidos =
+    veiculos.filter(
+      (v) => v.inspecionado
+    ).length;
+
+  const pendentes =
+    veiculos.length -
+    concluidos;
+
+  const percentual =
+    veiculos.length > 0
+      ? Math.round(
+          (concluidos * 100) /
+            veiculos.length
+        )
+      : 0;
+
   return (
     <div
       style={{
-        padding: "30px",
-        fontFamily: "Arial",
+        padding: "15px",
+        fontFamily:
+          "Arial, sans-serif",
+        backgroundColor:
+          "#f4f4f4",
+        minHeight: "100vh",
+        maxWidth: "700px",
+        margin: "0 auto",
       }}
     >
       <button
@@ -56,17 +79,76 @@ export default function VPCCQEVeiculos({
         ← Voltar
       </button>
 
-      <h1>
-        🚗 Veículos da Lista
-      </h1>
+      <div
+        style={{
+          textAlign: "center",
+          marginTop: "15px",
+          marginBottom: "25px",
+        }}
+      >
+        <h1
+          style={{
+            color: "#002C5F",
+            marginBottom: "5px",
+          }}
+        >
+          🚗 VEÍCULOS
+        </h1>
 
-      <p>
-        Quantidade:
-        {" "}
-        {veiculos.length}
-      </p>
+        <p>
+          Total:{" "}
+          <strong>
+            {veiculos.length}
+          </strong>
+        </p>
 
-      <hr />
+        <p>
+          ✅ Concluídos:{" "}
+          <strong>
+            {concluidos}
+          </strong>
+        </p>
+
+        <p>
+          ⏳ Pendentes:{" "}
+          <strong>
+            {pendentes}
+          </strong>
+        </p>
+
+        <div
+          style={{
+            width: "100%",
+            height: "14px",
+            background:
+              "#ddd",
+            borderRadius:
+              "20px",
+            marginTop: "10px",
+          }}
+        >
+          <div
+            style={{
+              width: `${percentual}%`,
+              height: "14px",
+              background:
+                "#002C5F",
+              borderRadius:
+                "20px",
+            }}
+          />
+        </div>
+
+        <p
+          style={{
+            fontWeight:
+              "bold",
+            marginTop: "8px",
+          }}
+        >
+          {percentual}%
+        </p>
+      </div>
 
       {veiculos.map(
         (veiculo) => (
@@ -98,26 +180,40 @@ export default function VPCCQEVeiculos({
               );
             }}
             style={{
-              border:
-                "1px solid #ccc",
-              padding: "15px",
-              marginBottom:
-                "10px",
+              backgroundColor:
+                "#fff",
               borderRadius:
-                "8px",
+                "16px",
+              padding: "18px",
+              marginBottom:
+                "15px",
               cursor: "pointer",
+              boxShadow:
+                "0 4px 10px rgba(0,0,0,0.10)",
             }}
           >
+            <h3
+              style={{
+                marginTop: 0,
+                color:
+                  "#002C5F",
+              }}
+            >
+              {veiculo.inspecionado
+                ? "✅ INSPECIONADO"
+                : "⏳ PENDENTE"}
+            </h3>
+
             <p>
               <strong>
-                VAGA:
+                Vaga:
               </strong>{" "}
               {veiculo.vaga}
             </p>
 
             <p>
               <strong>
-                MODELO:
+                Modelo:
               </strong>{" "}
               {veiculo.modelo}
             </p>
@@ -131,15 +227,9 @@ export default function VPCCQEVeiculos({
 
             <p>
               <strong>
-                AGING:
+                Aging:
               </strong>{" "}
               {veiculo.aging}
-            </p>
-
-            <p>
-              {veiculo.inspecionado
-                ? "✅ Inspecionado"
-                : "⬜ Pendente"}
             </p>
           </div>
         )

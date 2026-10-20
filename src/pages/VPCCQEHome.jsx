@@ -4,7 +4,8 @@ import { supabase } from "../services/supabase";
 export default function VPCCQEHome({
   setTela,
 }) {
-  const [listas, setListas] = useState([]);
+  const [listas, setListas] =
+    useState([]);
 
   useEffect(() => {
     carregarListas();
@@ -30,6 +31,7 @@ export default function VPCCQEHome({
       await Promise.all(
         (data || []).map(
           async (lista) => {
+
             const {
               data: veiculos,
             } = await supabase
@@ -55,7 +57,8 @@ export default function VPCCQEHome({
               ).length || 0;
 
             const pendentes =
-              total - concluidos;
+              total -
+              concluidos;
 
             const percentual =
               total > 0
@@ -77,93 +80,196 @@ export default function VPCCQEHome({
         )
       );
 
-    setListas(listasComResumo);
+    setListas(
+      listasComResumo
+    );
   }
 
   return (
     <div
       style={{
-        padding: "30px",
-        fontFamily: "Arial",
-        maxWidth: "900px",
+        padding: "15px",
+        fontFamily:
+          "Arial, sans-serif",
+        maxWidth: "700px",
         margin: "0 auto",
+        backgroundColor:
+          "#f4f4f4",
+        minHeight: "100vh",
       }}
     >
       <button
         onClick={() =>
           setTela("portal")
         }
+        style={{
+          marginBottom:
+            "20px",
+        }}
       >
         ← Voltar
       </button>
 
-      <h1>📋 VPCCQE</h1>
-
-      <h2>
-        Controle de Qualidade
-      </h2>
-
-      <hr />
-
-      {listas.map((lista) => (
-        <div
-          key={lista.id}
-          onClick={() => {
-            localStorage.setItem(
-              "listaSelecionada",
-              lista.id
-            );
-
-            setTela(
-              "vpccqe-veiculos"
-            );
-          }}
+      <div
+        style={{
+          textAlign: "center",
+          marginBottom:
+            "25px",
+        }}
+      >
+        <h1
           style={{
-            border:
-              "1px solid #ccc",
-            padding: "20px",
+            color: "#002C5F",
             marginBottom:
-              "15px",
-            cursor: "pointer",
-            borderRadius:
-              "8px",
-            backgroundColor:
-              "#ffffff",
+              "5px",
           }}
         >
-          <h3>
-            {lista.nome_lista}
-          </h3>
+          HYUNDAI
+        </h1>
 
-          <p>
-            <strong>
-              Total:
-            </strong>{" "}
-            {lista.total}
-          </p>
+        <h2
+          style={{
+            margin: 0,
+          }}
+        >
+          VPCCQE
+        </h2>
 
-          <p>
-            <strong>
+        <p
+          style={{
+            color: "#666",
+            marginTop:
+              "5px",
+          }}
+        >
+          Sistema de
+          Inspeção de
+          Qualidade
+        </p>
+      </div>
+
+      {listas
+        .filter(
+          (lista) =>
+            lista.total > 0
+        )
+        .map((lista) => (
+          <div
+            key={lista.id}
+            onClick={() => {
+              localStorage.setItem(
+                "listaSelecionada",
+                lista.id
+              );
+
+              setTela(
+                "vpccqe-veiculos"
+              );
+            }}
+            style={{
+              backgroundColor:
+                "#fff",
+              borderRadius:
+                "16px",
+              padding: "20px",
+              marginBottom:
+                "20px",
+              cursor: "pointer",
+              boxShadow:
+                "0 4px 10px rgba(0,0,0,0.10)",
+            }}
+          >
+            <h2
+              style={{
+                color:
+                  "#002C5F",
+                marginTop: 0,
+              }}
+            >
+              {
+                lista.nome_lista
+              }
+            </h2>
+
+            <p>
+              🚗 Veículos:
+              {" "}
+              <strong>
+                {lista.total}
+              </strong>
+            </p>
+
+            <p>
+              ✅
               Concluídos:
-            </strong>{" "}
-            {lista.concluidos}
-          </p>
+              {" "}
+              <strong>
+                {
+                  lista.concluidos
+                }
+              </strong>
+            </p>
 
-          <p>
-            <strong>
+            <p>
+              ⏳
               Pendentes:
-            </strong>{" "}
-            {lista.pendentes}
-          </p>
+              {" "}
+              <strong>
+                {
+                  lista.pendentes
+                }
+              </strong>
+            </p>
 
-          <p>
-            <strong>
-              Progresso:
-            </strong>{" "}
-            {lista.percentual}%
-          </p>
-        </div>
-      ))}
+            <div
+              style={{
+                marginTop:
+                  "15px",
+              }}
+            >
+              <div
+                style={{
+                  width:
+                    "100%",
+                  height:
+                    "14px",
+                  background:
+                    "#ddd",
+                  borderRadius:
+                    "20px",
+                }}
+              >
+                <div
+                  style={{
+                    width: `${lista.percentual}%`,
+                    height:
+                      "14px",
+                    background:
+                      "#002C5F",
+                    borderRadius:
+                      "20px",
+                  }}
+                />
+              </div>
+
+              <p
+                style={{
+                  textAlign:
+                    "center",
+                  marginTop:
+                    "8px",
+                  fontWeight:
+                    "bold",
+                }}
+              >
+                {
+                  lista.percentual
+                }
+                %
+              </p>
+            </div>
+          </div>
+        ))}
     </div>
   );
 }
