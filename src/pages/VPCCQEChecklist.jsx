@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
-import { supabase } from "../services/supabase";
+import {
+  salvarChecklist as salvarChecklistOffline,
+} from "../services/cqeOffline";
 
 export default function VPCCQEChecklist({
   setTela,
@@ -68,8 +70,7 @@ export default function VPCCQEChecklist({
     useState("");
 
   useEffect(() => {
-    carregarChecklistExistente();
-  }, []);
+}, []);
 
   async function carregarChecklistExistente() {
 
