@@ -1,5 +1,9 @@
 import { useEffect, useState } from "react";
-import { supabase } from "../services/supabase";
+import {
+  obterListas,
+  obterVeiculos,
+} from "../services/cqeOffline";
+
 
 export default function VPCCQEHome({
   setTela,
@@ -11,79 +15,67 @@ export default function VPCCQEHome({
     carregarListas();
   }, []);
 
-  async function carregarListas() {
-    const { data, error } =
-      await supabase
-        .from("vpccqe_listas")
-        .select("*")
-        .order("id", {
-          ascending: true,
-        });
+ async function carregarListas() {
 
-    if (error) {
-      alert(
-        "Erro ao carregar listas"
-      );
-      return;
-    }
+  const listas =
+    await obterListas();
 
-    const listasComResumo =
-      await Promise.all(
-        (data || []).map(
-          async (lista) => {
+  const veiculos =
+    await obterVeiculos();
 
-            const {
-              data: veiculos,
-            } = await supabase
-              .from(
-                "vpccqe_lista_veiculos"
+  const listasComResumo =
+    (listas || []).map(
+      (lista) => {
+
+        const veiculosLista =
+          veiculos.filter(
+            (v) =>
+              v.lista_id ===
+              lista.id
+          );
+
+        const total =
+          veiculosLista.length;
+
+        const concluidos =
+          veiculosLista.filter(
+            (v) =>
+              v.inspecionado ===
+              true
+          ).length;
+
+        const pendentes =
+          total -
+          concluidos;
+
+        const percentual =
+          total > 0
+            ? Math.round(
+                (concluidos *
+                  100) /
+                  total
               )
-              .select(
-                "inspecionado"
-              )
-              .eq(
-                "lista_id",
-                lista.id
-              );
+            : 0;
 
-            const total =
-              veiculos?.length || 0;
-
-            const concluidos =
-              veiculos?.filter(
-                (v) =>
-                  v.inspecionado ===
-                  true
-              ).length || 0;
-
-            const pendentes =
-              total -
-              concluidos;
-
-            const percentual =
-              total > 0
-                ? Math.round(
-                    (concluidos *
-                      100) /
-                      total
-                  )
-                : 0;
-
-            return {
-              ...lista,
-              total,
-              concluidos,
-              pendentes,
-              percentual,
-            };
-          }
-        )
-      );
-
-    setListas(
-      listasComResumo
+        return {
+          ...lista,
+          total,
+          concluidos,
+          pendentes,
+          percentual,
+        };
+      }
     );
-  }
+alert(
+  `Listas: ${listas.length} | Veículos: ${veiculos.length}`
+);
+
+  setListas(
+    listasComResumo
+  );
+}
+
+  
 
   return (
     <div
@@ -149,11 +141,7 @@ export default function VPCCQEHome({
       </div>
 
       {listas
-        .filter(
-          (lista) =>
-            lista.total > 0
-        )
-        .map((lista) => (
+  .map((lista) => (
           <div
             key={lista.id}
             onClick={() => {
