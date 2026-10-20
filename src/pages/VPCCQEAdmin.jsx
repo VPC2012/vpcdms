@@ -1,6 +1,12 @@
+import {
+  salvarListas,
+  salvarVeiculos,
+} from "../services/cqeOffline";
+
 import { useRef } from "react";
 import * as XLSX from "xlsx";
 import { supabase } from "../services/supabase";
+
 
 import {
   exportarVPCCQEExcel,
@@ -233,6 +239,8 @@ export default function VPCCQEAdmin({
       );
     };
 
+    
+
   const estiloBotao = {
     width: "100%",
     padding: "18px",
@@ -354,18 +362,33 @@ export default function VPCCQEAdmin({
       </button>
 
       <button
-        onClick={
-          limparBancoGeral
-        }
-        style={{
-          ...estiloBotao,
-          backgroundColor:
-            "#c62828",
-          color: "#fff",
-        }}
-      >
-        🗑 LIMPAR BANCO DE DADOS GERAL
-      </button>
-    </div>
-  );
+  onClick={
+    limparBancoGeral
+  }
+  style={{
+    ...estiloBotao,
+    backgroundColor:
+      "#c62828",
+    color: "#fff",
+  }}
+>
+  🗑 LIMPAR BANCO DE DADOS GERAL
+</button>
+
+<button
+  onClick={
+    atualizarListaCQE
+  }
+  style={{
+    ...estiloBotao,
+    backgroundColor:
+      "#002C5F",
+    color: "#fff",
+  }}
+>
+  🔄 ATUALIZAR LISTA DE CQE
+</button>
+
+</div>
+);
 }
