@@ -65,7 +65,7 @@ export default function Login({
         <div
           style={{
             position: "relative",
-            height: "180px",
+            height: "150px",
             overflow: "hidden",
             borderRadius: "20px",
             backgroundColor:
@@ -84,7 +84,8 @@ export default function Login({
               left: 0,
               width: "100%",
               height: "100%",
-              objectFit: "cover",
+              objectFit:
+                "cover",
               opacity: 0.10,
             }}
           />
@@ -129,9 +130,7 @@ export default function Login({
               style={{
                 color: "#666",
                 marginTop:
-                  "15px",
-                fontSize:
-                  "18px",
+                  "10px",
               }}
             >
               Plataforma Operacional
@@ -152,10 +151,11 @@ export default function Login({
         >
           <h2
             style={{
+              color:
+                "#002C5F",
               marginTop: 0,
-              color: "#002C5F",
-              textAlign:
-                "center",
+              marginBottom:
+                "20px",
             }}
           >
             Acesso ao Sistema
@@ -182,10 +182,10 @@ export default function Login({
               height: "50px",
               padding:
                 "0 15px",
-              borderRadius:
-                "10px",
               border:
                 "1px solid #ccc",
+              borderRadius:
+                "10px",
               fontSize:
                 "16px",
               boxSizing:
@@ -215,4 +215,9 @@ export default function Login({
             }}
           >
             Entrar
-         
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
