@@ -72,194 +72,80 @@ export default function VPCCQEChecklist({
   useEffect(() => {
 }, []);
 
-  async function carregarChecklistExistente() {
+  
 
-    const { data, error } =
-      await supabase
-        .from("vpccqe_checklist")
-        .select("*")
-        .eq("vin", vin)
-        .order("id", {
-          ascending: false,
-        })
-        .limit(1);
+const salvarChecklist =
+  async () => {
 
-    if (error) return;
-
-    if (!data || data.length === 0)
-      return;
-
-    const registro =
-      data[0];
-
-    setHmc(
-      registro.hmc || ""
-    );
-
-    setSoc(
-      registro.soc?.toString() ||
-        ""
-    );
-
-    setDataBateria(
-      registro.data_bateria ||
-        ""
-    );
-
-    setFusivel(
-      registro.fusivel ||
-        "Conectado"
-    );
-
-    setPneuDianteiroEsquerdo(
-      registro.pneu_di?.toString() ||
-        ""
-    );
-
-    setPneuDianteiroDireito(
-      registro.pneu_dd?.toString() ||
-        ""
-    );
-
-    setPneuTraseiroEsquerdo(
-      registro.pneu_te?.toString() ||
-        ""
-    );
-
-    setPneuTraseiroDireito(
-      registro.pneu_td?.toString() ||
-        ""
-    );
-
-    setObservacao(
-      registro.observacao ||
-        ""
-    );
-
-    setDefeito(
-      registro.resultado ||
-        "Não"
-    );
-  }
-
-  const salvarChecklist =
-    async () => {
+    try {
 
       const listaId =
-        localStorage.getItem(
-          "listaSelecionada"
+        Number(
+          localStorage.getItem(
+            "listaSelecionada"
+          )
         );
 
-      const {
-        data: checklistExistente,
-      } = await supabase
-        .from(
-          "vpccqe_checklist"
-        )
-        .select("id")
-        .eq("vin", vin)
-        .order("id", {
-          ascending: false,
-        })
-        .limit(1)
-        .maybeSingle();
+      await salvarChecklistOffline({
 
-      let error;
-
-      const dadosChecklist = {
         lista_id: listaId,
 
-        vin: vin,
+        vin,
+
+        modelo,
+
+        aging,
+
+        vaga,
 
         resultado: defeito,
 
-        hmc: hmc,
+        hmc,
 
-        soc: soc || null,
+        soc,
 
         data_bateria:
-          dataBateria || null,
+          dataBateria,
 
-        fusivel: fusivel,
+        fusivel,
 
         pneu_di:
-          pneuDianteiroEsquerdo ||
-          null,
+          pneuDianteiroEsquerdo,
 
         pneu_dd:
-          pneuDianteiroDireito ||
-          null,
+          pneuDianteiroDireito,
 
         pneu_te:
-          pneuTraseiroEsquerdo ||
-          null,
+          pneuTraseiroEsquerdo,
 
         pneu_td:
-          pneuTraseiroDireito ||
-          null,
+          pneuTraseiroDireito,
 
-        observacao:
-          observacao,
+        observacao,
 
         data_inspecao:
-          new Date()
-            .toISOString(),
-      };
-
-      if (
-        checklistExistente
-      ) {
-
-        ({ error } =
-          await supabase
-            .from(
-              "vpccqe_checklist"
-            )
-            .update(
-              dadosChecklist
-            )
-            .eq(
-              "id",
-              checklistExistente.id
-            ));
-
-      } else {
-
-        ({ error } =
-          await supabase
-            .from(
-              "vpccqe_checklist"
-            )
-            .insert([
-              dadosChecklist,
-            ]));
-      }
-
-      if (error) {
-        alert(
-          "Erro ao salvar checklist"
-        );
-        return;
-      }
-
-      await supabase
-        .from(
-          "vpccqe_lista_veiculos"
-        )
-        .update({
-          inspecionado: true,
-        })
-        .eq("vin", vin);
+          new Date().toISOString(),
+      });
 
       alert(
-        "✅ Checklist salvo com sucesso!"
+        "✅ Checklist salvo offline com sucesso!"
       );
 
       setTela(
         "vpccqe-veiculos"
       );
-    };
 
+    } catch (erro) {
+
+      console.error(
+        erro
+      );
+
+      alert(
+  JSON.stringify(erro)
+);
+    }
+  };
   return (
     <div
       style={{
