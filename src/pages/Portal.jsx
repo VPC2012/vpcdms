@@ -23,48 +23,6 @@ export default function Portal({
       }}
     >
  
-<h1
-  style={{
-    color: "#002C5F",
-    marginBottom: "5px",
-  }}
->
-  HYUNDAI
-</h1>
-
-<h2
-  style={{
-    margin: 0,
-  }}
->
-  Vehicle Processing Center
-</h2>
-
- 
-<button
-  onClick={() => {
-    localStorage.clear();
-    setTela("login");
-  }}
-  style={{
-    position: "absolute",
-    top: "20px",
-    right: "20px",
-    padding: "8px 15px",
-  }}
->
-  🚪 Sair
-</button>
-
-     <p
-  style={{
-    color: "#666",
-    marginTop: "10px",
-    marginBottom: "20px",
-  }}
->
-  Portal Operacional
-</p>
 
 <div
   style={{
@@ -177,22 +135,42 @@ export default function Portal({
           </div>
 
           <div>
-            <button
-              onClick={() =>
-                setTela(
-                  "vpccqe"
-                )
-              }
-              style={{
-                width: "350px",
-                height: "100px",
-                fontSize: "22px",
-              }}
-            >
-              📋 VPCCQE
-              <br />
-              Checklist
-            </button>
+           <button
+  onClick={() =>
+    setTela(
+      "vpccqe"
+    )
+  }
+  style={{
+    width: "100%",
+    maxWidth: "700px",
+    minHeight: "130px",
+    borderRadius: "20px",
+    border: "none",
+    backgroundColor: "#ffffff",
+    boxShadow:
+      "0 6px 15px rgba(0,0,0,0.10)",
+    marginBottom: "20px",
+    cursor: "pointer",
+    padding: "20px",
+  }}
+>
+  📋 VPCCQE
+
+  <br />
+  <br />
+
+  <span
+    style={{
+      fontSize: "16px",
+      color: "#666",
+    }}
+  >
+    Controle de Qualidade
+    <br />
+    de Estoque (CQE)
+  </span>
+</button>
           </div>
         </>
       )}
