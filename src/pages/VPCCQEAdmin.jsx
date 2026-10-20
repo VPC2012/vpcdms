@@ -1,6 +1,8 @@
 import {
   salvarListas,
   salvarVeiculos,
+  obterChecklistsPendentes,
+  marcarComoEnviado,
 } from "../services/cqeOffline";
 
 import { useRef } from "react";
@@ -296,6 +298,61 @@ export default function VPCCQEAdmin({
     }
   };
 
+const enviarInformacao =
+  async () => {
+
+    try {
+
+      const pendentes =
+        await obterChecklistsPendentes();
+
+      if (
+        pendentes.length === 0
+      ) {
+        alert(
+          "Nenhum checklist pendente para envio."
+        );
+        return;
+      }
+
+      let enviados = 0;
+
+      for (const checklist of pendentes) {
+
+        const {
+          error,
+        } = await supabase
+          .from(
+            "vpccqe_checklist"
+          )
+          .upsert(checklist);
+
+        if (!error) {
+
+          await marcarComoEnviado(
+            checklist.vin
+          );
+
+          enviados++;
+        }
+      }
+
+      alert(
+        `✅ ${enviados} checklists enviados com sucesso.`
+      );
+
+    } catch (erro) {
+
+      console.error(
+        erro
+      );
+
+      alert(
+        "Erro ao enviar informações."
+      );
+    }
+  };
+
   const estiloBotao = {
     width: "100%",
     padding: "18px",
@@ -442,6 +499,20 @@ export default function VPCCQEAdmin({
   }}
 >
   🔄 ATUALIZAR LISTA DE CQE
+  
+</button>
+<button
+  onClick={
+    enviarInformacao
+  }
+  style={{
+    ...estiloBotao,
+    backgroundColor:
+      "#2e7d32",
+    color: "#fff",
+  }}
+>
+  ☁️ ENVIAR INFORMAÇÃO
 </button>
 
 </div>
