@@ -239,7 +239,62 @@ export default function VPCCQEAdmin({
       );
     };
 
-    
+    const atualizarListaCQE =
+  async () => {
+
+    try {
+
+      const {
+        data: listas,
+        error: erroListas,
+      } = await supabase
+        .from("vpccqe_listas")
+        .select("*");
+
+      if (erroListas) {
+        alert(
+          "Erro ao carregar listas."
+        );
+        return;
+      }
+
+      const {
+        data: veiculos,
+        error: erroVeiculos,
+      } = await supabase
+        .from("vpccqe_lista_veiculos")
+        .select("*");
+
+      if (erroVeiculos) {
+        alert(
+          "Erro ao carregar veículos."
+        );
+        return;
+      }
+
+      await salvarListas(
+        listas || []
+      );
+
+      await salvarVeiculos(
+        veiculos || []
+      );
+
+      alert(
+        `✅ Lista de CQE atualizada.\n\n${veiculos.length} veículos carregados para operação offline.`
+      );
+
+    } catch (erro) {
+
+      console.error(
+        erro
+      );
+
+      alert(
+        "Erro ao atualizar lista."
+      );
+    }
+  };
 
   const estiloBotao = {
     width: "100%",
