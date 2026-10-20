@@ -28,11 +28,11 @@ export default function VPCCQEHome({
       (lista) => {
 
         const veiculosLista =
-          veiculos.filter(
-            (v) =>
-              v.lista_id ===
-              lista.id
-          );
+  veiculos.filter(
+    (v) =>
+      Number(v.lista_id) ===
+      Number(lista.id)
+  );
 
         const total =
           veiculosLista.length;
@@ -66,9 +66,7 @@ export default function VPCCQEHome({
         };
       }
     );
-alert(
-  `Listas: ${listas.length} | Veículos: ${veiculos.length}`
-);
+
 
   setListas(
     listasComResumo
