@@ -1,3 +1,6 @@
+
+import patio from "../assets/patio-oficial.jpg";
+
 export default function Portal({
   setTela,
 }) {
@@ -20,9 +23,23 @@ export default function Portal({
       }}
     >
  
-<h1>
-  🌐 VPC PORTAL
+<h1
+  style={{
+    color: "#002C5F",
+    marginBottom: "5px",
+  }}
+>
+  HYUNDAI
 </h1>
+
+<h2
+  style={{
+    margin: 0,
+  }}
+>
+  Vehicle Processing Center
+</h2>
+
  
 <button
   onClick={() => {
@@ -39,12 +56,37 @@ export default function Portal({
   🚪 Sair
 </button>
 
-      <p>
-        Central de Aplicações VPC
-      </p>
+     <p
+  style={{
+    color: "#666",
+    marginTop: "10px",
+    marginBottom: "20px",
+  }}
+>
+  Portal Operacional
+</p>
 
-      <br />
+<div
+  style={{
+    margin: "20px auto",
+    maxWidth: "900px",
+  }}
+>
+  <img
+    src={patio}
+    alt="Pátio Hyundai"
+    style={{
+      width: "100%",
+      borderRadius: "20px",
+   boxShadow:
+ "0 4px 10px rgba(0,0,0,0.10)",
+    }}
+  />
+</div>
 
+<br />
+
+      
       {perfil === "operacao" && (
         <>
           <div>
@@ -55,12 +97,18 @@ export default function Portal({
                 )
               }
               style={{
-                width: "350px",
-                height: "100px",
-                fontSize: "22px",
-                marginBottom:
-                  "20px",
-              }}
+  width: "100%",
+  maxWidth: "600px",
+  height: "120px",
+  fontSize: "22px",
+  marginBottom: "20px",
+  borderRadius: "16px",
+  border: "none",
+  boxShadow:
+    "0 4px 10px rgba(0,0,0,0.10)",
+  backgroundColor: "#ffffff",
+  cursor: "pointer",
+}}
             >
               🚗 VPCDMS
               <br />
