@@ -55,7 +55,7 @@ export default function Portal({
           position: "relative",
           maxWidth: "900px",
           margin: "20px auto",
-          height: "180px",
+          height: "150px",
           overflow: "hidden",
           borderRadius: "20px",
           backgroundColor: "#ffffff",
@@ -71,7 +71,7 @@ export default function Portal({
             width: "100%",
             height: "100%",
             objectFit: "cover",
-            opacity: 0.06,
+            opacity: 0.10,
           }}
         />
 
