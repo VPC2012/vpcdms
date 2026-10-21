@@ -212,23 +212,35 @@ export async function salvarChecklist(
   const db =
     await abrirBanco();
 
-  const tx =
-    db.transaction(
-      "checklists",
-      "readwrite"
-    );
+  return new Promise(
+    (resolve, reject) => {
 
-  const store =
-    tx.objectStore(
-      "checklists"
-    );
+      const tx =
+        db.transaction(
+          "checklists",
+          "readwrite"
+        );
 
-  store.put({
-    ...checklist,
-    enviado: false,
-  });
+      const store =
+        tx.objectStore(
+          "checklists"
+        );
 
-  return tx.complete;
+      store.put({
+        ...checklist,
+        enviado: false,
+      });
+
+      tx.oncomplete =
+        () => resolve();
+
+      tx.onerror =
+        () =>
+          reject(
+            tx.error
+          );
+    }
+  );
 }
 
 export async function obterChecklists() {
