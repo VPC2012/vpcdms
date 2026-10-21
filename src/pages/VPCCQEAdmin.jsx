@@ -3,7 +3,9 @@ import {
   salvarVeiculos,
   obterChecklistsPendentes,
   marcarComoEnviado,
+  limparBancoOffline,
 } from "../services/cqeOffline";
+
 
 import { useRef } from "react";
 import * as XLSX from "xlsx";
@@ -235,6 +237,7 @@ export default function VPCCQEAdmin({
         );
         return;
       }
+      await limparBancoOffline();
 
       alert(
         "✅ Banco de dados limpo com sucesso.\n\nImporte uma nova lista para iniciar uma nova campanha."

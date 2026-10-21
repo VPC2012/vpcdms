@@ -406,3 +406,44 @@ export async function marcarVeiculoInspecionado(
     }
   );
 }
+export async function limparBancoOffline() {
+
+  const db =
+    await abrirBanco();
+
+  return new Promise(
+    (resolve, reject) => {
+
+      const tx =
+        db.transaction(
+          [
+            "listas",
+            "veiculos",
+            "checklists",
+          ],
+          "readwrite"
+        );
+
+      tx.objectStore(
+        "listas"
+      ).clear();
+
+      tx.objectStore(
+        "veiculos"
+      ).clear();
+
+      tx.objectStore(
+        "checklists"
+      ).clear();
+
+      tx.oncomplete =
+        () => resolve();
+
+      tx.onerror =
+        () =>
+          reject(
+            tx.error
+          );
+    }
+  );
+}
