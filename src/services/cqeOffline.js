@@ -284,6 +284,8 @@ export async function marcarComoEnviado(
   vin
 ) {
 
+
+
   const db =
     await abrirBanco();
 
@@ -322,6 +324,63 @@ export async function marcarComoEnviado(
 
           store.put(
             registro
+          );
+
+          resolve();
+        };
+
+      request.onerror =
+        () =>
+          reject(
+            request.error
+          );
+    }
+  );
+}
+
+export async function marcarVeiculoInspecionado(
+  vin
+) {
+
+  const db =
+    await abrirBanco();
+
+  return new Promise(
+    (resolve, reject) => {
+
+      const tx =
+        db.transaction(
+          "veiculos",
+          "readwrite"
+        );
+
+      const store =
+        tx.objectStore(
+          "veiculos"
+        );
+
+      const request =
+        store.getAll();
+
+      request.onsuccess =
+        () => {
+
+          const veiculo =
+            request.result.find(
+              (v) =>
+                v.vin === vin
+            );
+
+          if (!veiculo) {
+            resolve();
+            return;
+          }
+
+          veiculo.inspecionado =
+            true;
+
+          store.put(
+            veiculo
           );
 
           resolve();

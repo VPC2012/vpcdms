@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import {
   salvarChecklist as salvarChecklistOffline,
+  marcarVeiculoInspecionado,
 } from "../services/cqeOffline";
 
 export default function VPCCQEChecklist({
@@ -126,6 +127,10 @@ const salvarChecklist =
         data_inspecao:
           new Date().toISOString(),
       });
+
+await marcarVeiculoInspecionado(
+  vin
+);
 
       alert(
         "✅ Checklist salvo offline com sucesso!"
