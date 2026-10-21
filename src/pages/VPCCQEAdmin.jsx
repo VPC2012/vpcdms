@@ -312,6 +312,14 @@ const enviarInformacao =
       const pendentes =
         await obterChecklistsPendentes();
 
+        alert(
+  `Pendentes encontrados: ${pendentes.length}`
+);
+
+alert(
+  `Pendentes: ${pendentes.length}`
+);
+
       if (
         pendentes.length === 0
       ) {
