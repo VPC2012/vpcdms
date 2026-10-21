@@ -316,9 +316,6 @@ const enviarInformacao =
   `Pendentes encontrados: ${pendentes.length}`
 );
 
-alert(
-  `Pendentes: ${pendentes.length}`
-);
 
       if (
         pendentes.length === 0
@@ -339,7 +336,46 @@ alert(
           .from(
             "vpccqe_checklist"
           )
-          .upsert(checklist);
+          .upsert({
+  lista_id:
+    checklist.lista_id,
+
+  vin:
+    checklist.vin,
+
+  resultado:
+    checklist.resultado,
+
+  hmc:
+    checklist.hmc,
+
+  soc:
+    checklist.soc,
+
+  data_bateria:
+    checklist.data_bateria,
+
+  fusivel:
+    checklist.fusivel,
+
+  pneu_di:
+    checklist.pneu_di,
+
+  pneu_dd:
+    checklist.pneu_dd,
+
+  pneu_te:
+    checklist.pneu_te,
+
+  pneu_td:
+    checklist.pneu_td,
+
+  observacao:
+    checklist.observacao,
+
+  data_inspecao:
+    checklist.data_inspecao,
+});
 if (error) {
 
   alert(
