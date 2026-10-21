@@ -166,6 +166,8 @@ export default function VPCCQEAdmin({
         return;
       }
 
+      await atualizarListaCQE();
+      
       alert(
         `✅ Importação concluída com ${veiculos.length} veículos`
       );
