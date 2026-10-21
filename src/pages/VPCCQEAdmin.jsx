@@ -340,7 +340,13 @@ alert(
             "vpccqe_checklist"
           )
           .upsert(checklist);
+if (error) {
 
+  alert(
+    JSON.stringify(error)
+  );
+
+}
         if (!error) {
 
           await marcarComoEnviado(
