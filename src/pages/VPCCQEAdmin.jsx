@@ -234,25 +234,17 @@ export default function VPCCQEAdmin({
         .gt("id", 0);
 
       if (erroListas) {
-        alert(
-          "Erro ao resetar listas."
-        );
-        return;
-      }
-      await limparBancoOffline();
+  alert(
+    "Erro ao resetar listas."
+  );
+  return;
+}
 
-      await salvarListas(
-  listas || []
-);
-
-await salvarVeiculos(
-  veiculos || []
-);
 await limparBancoOffline();
 
-      alert(
-        "✅ Banco de dados limpo com sucesso.\n\nImporte uma nova lista para iniciar uma nova campanha."
-      );
+alert(
+  "✅ Banco de dados limpo com sucesso.\n\nImporte uma nova lista para iniciar uma nova campanha."
+);
     };
 
     const atualizarListaCQE =
@@ -512,7 +504,7 @@ const enviarInformacao =
     color: "#fff",
   }}
 >
-  🔄 ATUALIZAR LISTA DE CQE
+  📲 ATUALIZAR EQUIPAMENTO OFFLINE
   
 </button>
 <button

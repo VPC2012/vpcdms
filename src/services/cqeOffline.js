@@ -68,32 +68,47 @@ function abrirBanco() {
    LISTAS
 ======================= */
 
+
 export async function salvarListas(
   listas
 ) {
+
   const db =
     await abrirBanco();
 
-  const tx =
-    db.transaction(
-      "listas",
-      "readwrite"
-    );
+  return new Promise(
+    (resolve, reject) => {
 
-  const store =
-    tx.objectStore(
-      "listas"
-    );
+      const tx =
+        db.transaction(
+          "listas",
+          "readwrite"
+        );
 
-  await store.clear();
+      const store =
+        tx.objectStore(
+          "listas"
+        );
 
-  listas.forEach(
-    (lista) =>
-      store.put(lista)
+      store.clear();
+
+      listas.forEach(
+        (lista) =>
+          store.put(lista)
+      );
+
+      tx.oncomplete =
+        () => resolve();
+
+      tx.onerror =
+        () =>
+          reject(
+            tx.error
+          );
+    }
   );
-
-  return tx.complete;
 }
+
 
 export async function obterListas() {
 
@@ -143,25 +158,37 @@ export async function salvarVeiculos(
   const db =
     await abrirBanco();
 
-  const tx =
-    db.transaction(
-      "veiculos",
-      "readwrite"
-    );
+  return new Promise(
+    (resolve, reject) => {
 
-  const store =
-    tx.objectStore(
-      "veiculos"
-    );
+      const tx =
+        db.transaction(
+          "veiculos",
+          "readwrite"
+        );
 
-  await store.clear();
+      const store =
+        tx.objectStore(
+          "veiculos"
+        );
 
-  veiculos.forEach(
-    (veiculo) =>
-      store.put(veiculo)
+      store.clear();
+
+      veiculos.forEach(
+        (veiculo) =>
+          store.put(veiculo)
+      );
+
+      tx.oncomplete =
+        () => resolve();
+
+      tx.onerror =
+        () =>
+          reject(
+            tx.error
+          );
+    }
   );
-
-  return tx.complete;
 }
 
 export async function obterVeiculos() {
@@ -332,13 +359,22 @@ export async function marcarComoEnviado(
           }
 
           registro.enviado =
-            true;
+  true;
 
-          store.put(
-            registro
-          );
+const updateRequest =
+  store.put(
+    registro
+  );
 
-          resolve();
+updateRequest.onsuccess =
+  () => resolve();
+
+updateRequest.onerror =
+  () =>
+    reject(
+      updateRequest.error
+    );
+
         };
 
       request.onerror =
@@ -391,11 +427,19 @@ export async function marcarVeiculoInspecionado(
           veiculo.inspecionado =
             true;
 
-          store.put(
-            veiculo
-          );
+          const updateRequest =
+  store.put(
+    veiculo
+  );
 
-          resolve();
+updateRequest.onsuccess =
+  () => resolve();
+
+updateRequest.onerror =
+  () =>
+    reject(
+      updateRequest.error
+    );
         };
 
       request.onerror =
