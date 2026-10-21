@@ -239,6 +239,15 @@ export default function VPCCQEAdmin({
       }
       await limparBancoOffline();
 
+      await salvarListas(
+  listas || []
+);
+
+await salvarVeiculos(
+  veiculos || []
+);
+await limparBancoOffline();
+
       alert(
         "✅ Banco de dados limpo com sucesso.\n\nImporte uma nova lista para iniciar uma nova campanha."
       );
