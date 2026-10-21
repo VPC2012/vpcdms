@@ -312,11 +312,7 @@ const enviarInformacao =
       const pendentes =
         await obterChecklistsPendentes();
 
-        alert(
-  `Pendentes encontrados: ${pendentes.length}`
-);
-
-
+      
       if (
         pendentes.length === 0
       ) {
@@ -376,13 +372,7 @@ const enviarInformacao =
   data_inspecao:
     checklist.data_inspecao,
 });
-if (error) {
 
-  alert(
-    JSON.stringify(error)
-  );
-
-}
         if (!error) {
 
           await marcarComoEnviado(
