@@ -111,8 +111,14 @@ if (erroListas) {
         OBSERVACAO:
           checklist?.observacao || "",
 
-        DATA_INSPECAO:
-          checklist?.data_inspecao || "",
+       DATA_INSPECAO:
+  checklist?.data_inspecao
+    ? new Date(
+        checklist.data_inspecao
+      ).toLocaleDateString(
+        "pt-BR"
+      )
+    : "",
       };
     }
   );
