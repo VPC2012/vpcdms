@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">VPCPDI</string>
+    <string name="title_activity_main">VPCPDI</string>
+    <string name="package_name">com.hyundai.vpcpdi</string>
+    <string name="custom_url_scheme">com.hyundai.vpcpdi</string>
+</resources>
