@@ -1,3 +1,4 @@
+
 import {
   salvarListas,
   salvarVeiculos,
@@ -250,6 +251,16 @@ alert(
     const atualizarListaCQE =
   async () => {
 
+const pendentes =
+  await obterChecklistsPendentes();
+
+if (pendentes.length > 0) {
+  alert(
+    `⚠️ Existem ${pendentes.length} checklists pendentes de envio.\n\nEnvie as informações antes de sincronizar os dados.`
+  );
+  return;
+}
+
     try {
 
       const {
@@ -289,8 +300,8 @@ alert(
       );
 
       alert(
-        `✅ Lista de CQE atualizada.\n\n${veiculos.length} veículos carregados para operação offline.`
-      );
+  `✅ Dados sincronizados com sucesso.\n\n${veiculos.length} veículos carregados.`
+);
 
     } catch (erro) {
 
@@ -298,9 +309,9 @@ alert(
         erro
       );
 
-      alert(
-        "Erro ao atualizar lista."
-      );
+     alert(
+  "Erro ao sincronizar dados."
+);
     }
   };
 
@@ -354,8 +365,8 @@ const enviarInformacao =
   fusivel:
     checklist.fusivel,
 
-  pneu_di:
-    checklist.pneu_di,
+  pneu_de:
+  checklist.pneu_de,
 
   pneu_dd:
     checklist.pneu_dd,
@@ -544,7 +555,7 @@ const enviarInformacao =
     color: "#fff",
   }}
 >
-  📲 ATUALIZAR EQUIPAMENTO OFFLINE
+🔄 SINCRONIZAR DADOS
   
 </button>
 <button

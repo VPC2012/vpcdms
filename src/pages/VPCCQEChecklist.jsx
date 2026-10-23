@@ -110,7 +110,7 @@ const salvarChecklist =
 
         fusivel,
 
-        pneu_di:
+        pneu_de:
           pneuDianteiroEsquerdo,
 
         pneu_dd:

@@ -93,8 +93,8 @@ if (erroListas) {
         FUSIVEL:
           checklist?.fusivel || "",
 
-        PNEU_DI:
-          checklist?.pneu_di || "",
+        PNEU_DE:
+          checklist?.pneu_de || "",
 
         PNEU_DD:
           checklist?.pneu_dd || "",
