@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import {
   salvarChecklist as salvarChecklistOffline,
   marcarVeiculoInspecionado,
+  obterChecklistPorVin,
 } from "../services/cqeOffline";
 
 export default function VPCCQEChecklist({
@@ -70,70 +71,59 @@ export default function VPCCQEChecklist({
   const [observacao, setObservacao] =
     useState("");
 
-  useEffect(() => {
-  const rascunho = localStorage.getItem(
-    `rascunho_${vin}`
+useEffect(() => {
+  carregarChecklist();
+}, [vin]);
+
+async function carregarChecklist() {
+  const checklist =
+    await obterChecklistPorVin(vin);
+
+  if (!checklist) return;
+
+  setHmc(
+    checklist.hmc || ""
   );
 
-  if (!rascunho) return;
+  setSoc(
+    checklist.soc || ""
+  );
 
-  const dados = JSON.parse(rascunho);
+  setDataBateria(
+    checklist.data_bateria || ""
+  );
 
-  setHmc(dados.hmc || "");
-  setSoc(dados.soc || "");
-  setDataBateria(dados.dataBateria || "");
-  setFusivel(dados.fusivel || "Conectado");
+  setFusivel(
+    checklist.fusivel ||
+      "Conectado"
+  );
 
   setPneuDianteiroEsquerdo(
-    dados.pneuDianteiroEsquerdo || ""
+    checklist.pneu_de || ""
   );
 
   setPneuDianteiroDireito(
-    dados.pneuDianteiroDireito || ""
+    checklist.pneu_dd || ""
   );
 
   setPneuTraseiroEsquerdo(
-    dados.pneuTraseiroEsquerdo || ""
+    checklist.pneu_te || ""
   );
 
   setPneuTraseiroDireito(
-    dados.pneuTraseiroDireito || ""
-    
+    checklist.pneu_td || ""
   );
 
-  setDefeito(dados.defeito || "Não");
-  setObservacao(dados.observacao || "");
-}, [vin]);
-
-  useEffect(() => {
-  localStorage.setItem(
-    `rascunho_${vin}`,
-    JSON.stringify({
-      hmc,
-      soc,
-      dataBateria,
-      fusivel,
-      pneuDianteiroEsquerdo,
-      pneuDianteiroDireito,
-      pneuTraseiroEsquerdo,
-      pneuTraseiroDireito,
-      defeito,
-      observacao,
-    })
+  setDefeito(
+    checklist.resultado ||
+      "Não"
   );
-}, [
-  hmc,
-  soc,
-  dataBateria,
-  fusivel,
-  pneuDianteiroEsquerdo,
-  pneuDianteiroDireito,
-  pneuTraseiroEsquerdo,
-  pneuTraseiroDireito,
-  defeito,
-  observacao,
-  vin,
-]);
+
+  setObservacao(
+    checklist.observacao ||
+      ""
+  );
+}
 
 const salvarChecklist =
   async () => {
@@ -192,9 +182,6 @@ await marcarVeiculoInspecionado(
   vin
 );
 
-localStorage.removeItem(
-  `rascunho_${vin}`
-);
 
       alert(
         "✅ Checklist salvo offline com sucesso!"

@@ -270,6 +270,43 @@ export async function salvarChecklist(
   );
 }
 
+export async function obterChecklistPorVin(
+  vin
+) {
+  const db =
+    await abrirBanco();
+
+  return new Promise(
+    (resolve, reject) => {
+      const tx =
+        db.transaction(
+          "checklists",
+          "readonly"
+        );
+
+      const store =
+        tx.objectStore(
+          "checklists"
+        );
+
+      const request =
+        store.get(vin);
+
+      request.onsuccess =
+        () =>
+          resolve(
+            request.result
+          );
+
+      request.onerror =
+        () =>
+          reject(
+            request.error
+          );
+    }
+  );
+}
+
 export async function obterChecklists() {
 
   const db =
