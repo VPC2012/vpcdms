@@ -371,7 +371,7 @@ alert(
   fusivel:
     checklist.fusivel,
 
-  pneu_de:
+  pneu_di:
   checklist.pneu_de,
 
   pneu_dd:
