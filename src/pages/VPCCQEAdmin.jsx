@@ -323,16 +323,6 @@ const enviarInformacao =
       const pendentes =
         await obterChecklistsPendentes();
 
-      console.log(
-  "PENDENTES",
-  pendentes
-);
-
-alert(
-  `Pendentes encontrados: ${pendentes.length}`
-);
-
-        
       if (
         pendentes.length === 0
       ) {
@@ -346,76 +336,58 @@ alert(
 
       for (const checklist of pendentes) {
 
-       const resultado = await supabase
-  .from("vpccqe_checklist")
-  .upsert({
+        const resultado = await supabase
+          .from("vpccqe_checklist")
+          .upsert({
 
-    lista_id:
-      checklist.lista_id,
+            lista_id:
+              checklist.lista_id,
 
-    vin:
-      checklist.vin,
+            vin:
+              checklist.vin,
 
-    resultado:
-      checklist.resultado,
+            resultado:
+              checklist.resultado,
 
-    hmc:
-      checklist.hmc,
+            hmc:
+              checklist.hmc,
 
-    soc:
-      checklist.soc,
+            soc:
+              checklist.soc,
 
-    data_bateria:
-      checklist.data_bateria,
+            data_bateria:
+              checklist.data_bateria,
 
-    fusivel:
-      checklist.fusivel,
+            fusivel:
+              checklist.fusivel,
 
-    pneu_di:
-      checklist.pneu_de,
+            pneu_di:
+              checklist.pneu_de,
 
-    pneu_dd:
-      checklist.pneu_dd,
+            pneu_dd:
+              checklist.pneu_dd,
 
-    pneu_te:
-      checklist.pneu_te,
+            pneu_te:
+              checklist.pneu_te,
 
-    pneu_td:
-      checklist.pneu_td,
+            pneu_td:
+              checklist.pneu_td,
 
-    observacao:
-      checklist.observacao,
+            observacao:
+              checklist.observacao,
 
-    data_inspecao:
-      checklist.data_inspecao,
-});
+            data_inspecao:
+              checklist.data_inspecao,
+          });
 
-alert(
-  JSON.stringify(resultado)
-);
+        if (!resultado.error) {
 
-if (resultado.error) {
+          await marcarComoEnviado(
+            checklist.vin
+          );
 
-  console.log(
-    "ERRO SUPABASE",
-    resultado.error
-  );
-
-  alert(
-    JSON.stringify(
-      resultado.error
-    )
-  );
-}
-
-if (!resultado.error) {
-
-  await marcarComoEnviado(
-    checklist.vin
-  );
-
-  enviados++;
-}
+          enviados++;
+        }
       }
 
       alert(
