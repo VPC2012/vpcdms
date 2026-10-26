@@ -392,6 +392,17 @@ alert(
   data_inspecao:
     checklist.data_inspecao,
 });
+if (error) {
+  console.log(
+    "ERRO SUPABASE",
+    error
+  );
+
+  alert(
+    JSON.stringify(error)
+  );
+}
+
 
         if (!error) {
 
