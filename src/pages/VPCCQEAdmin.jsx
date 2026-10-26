@@ -291,13 +291,39 @@ if (pendentes.length > 0) {
         return;
       }
 
+      const {
+  data: checklists,
+  error: erroChecklists,
+} = await supabase
+  .from("vpccqe_checklist")
+  .select("*");
+
+if (erroChecklists) {
+  alert(
+    "Erro ao carregar checklists."
+  );
+  return;
+}
       await salvarListas(
         listas || []
       );
 
-      await salvarVeiculos(
-        veiculos || []
-      );
+      const veiculosAtualizados =
+  (veiculos || []).map(
+    (veiculo) => ({
+      ...veiculo,
+      inspecionado:
+        (checklists || []).some(
+          (checklist) =>
+            checklist.vin ===
+            veiculo.vin
+        ),
+    })
+  );
+
+await salvarVeiculos(
+  veiculosAtualizados
+);
 
       alert(
   `✅ Dados sincronizados com sucesso.\n\n${veiculos.length} veículos carregados.`
