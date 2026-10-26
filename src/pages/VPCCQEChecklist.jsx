@@ -142,14 +142,14 @@ await marcarVeiculoInspecionado(
 
     } catch (erro) {
 
-      console.error(
-        erro
-      );
+  console.error(
+    erro
+  );
 
-      alert(
-  JSON.stringify(erro)
-);
-    }
+  alert(
+    "Erro ao salvar checklist."
+  );
+}
   };
   return (
     <div
@@ -305,7 +305,7 @@ await marcarVeiculoInspecionado(
       >
         <h2>🛞 Pressão dos Pneus</h2>
 
-        <p>Pneu DI</p>
+        <p>Pneu DE</p>
         <input
           value={
             pneuDianteiroEsquerdo
