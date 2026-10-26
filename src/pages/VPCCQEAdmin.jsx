@@ -346,13 +346,10 @@ alert(
 
       for (const checklist of pendentes) {
 
-        const {
-          error,
-        } = await supabase
-          .from(
-            "vpccqe_checklist"
-          )
-          .upsert({
+       const resultado = await supabase
+  .from("vpccqe_checklist")
+  .upsert({
+    
   lista_id:
     checklist.lista_id,
 
@@ -392,6 +389,10 @@ alert(
   data_inspecao:
     checklist.data_inspecao,
 });
+alert(
+  JSON.stringify(resultado)
+);
+
 if (error) {
   console.log(
     "ERRO SUPABASE",
