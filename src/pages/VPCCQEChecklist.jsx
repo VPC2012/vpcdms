@@ -71,9 +71,69 @@ export default function VPCCQEChecklist({
     useState("");
 
   useEffect(() => {
-}, []);
+  const rascunho = localStorage.getItem(
+    `rascunho_${vin}`
+  );
 
-  
+  if (!rascunho) return;
+
+  const dados = JSON.parse(rascunho);
+
+  setHmc(dados.hmc || "");
+  setSoc(dados.soc || "");
+  setDataBateria(dados.dataBateria || "");
+  setFusivel(dados.fusivel || "Conectado");
+
+  setPneuDianteiroEsquerdo(
+    dados.pneuDianteiroEsquerdo || ""
+  );
+
+  setPneuDianteiroDireito(
+    dados.pneuDianteiroDireito || ""
+  );
+
+  setPneuTraseiroEsquerdo(
+    dados.pneuTraseiroEsquerdo || ""
+  );
+
+  setPneuTraseiroDireito(
+    dados.pneuTraseiroDireito || ""
+    
+  );
+
+  setDefeito(dados.defeito || "Não");
+  setObservacao(dados.observacao || "");
+}, [vin]);
+
+  useEffect(() => {
+  localStorage.setItem(
+    `rascunho_${vin}`,
+    JSON.stringify({
+      hmc,
+      soc,
+      dataBateria,
+      fusivel,
+      pneuDianteiroEsquerdo,
+      pneuDianteiroDireito,
+      pneuTraseiroEsquerdo,
+      pneuTraseiroDireito,
+      defeito,
+      observacao,
+    })
+  );
+}, [
+  hmc,
+  soc,
+  dataBateria,
+  fusivel,
+  pneuDianteiroEsquerdo,
+  pneuDianteiroDireito,
+  pneuTraseiroEsquerdo,
+  pneuTraseiroDireito,
+  defeito,
+  observacao,
+  vin,
+]);
 
 const salvarChecklist =
   async () => {
@@ -130,6 +190,10 @@ const salvarChecklist =
 
 await marcarVeiculoInspecionado(
   vin
+);
+
+localStorage.removeItem(
+  `rascunho_${vin}`
 );
 
       alert(
