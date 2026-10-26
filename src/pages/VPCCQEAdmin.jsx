@@ -349,70 +349,73 @@ alert(
        const resultado = await supabase
   .from("vpccqe_checklist")
   .upsert({
-    
-  lista_id:
-    checklist.lista_id,
 
-  vin:
-    checklist.vin,
+    lista_id:
+      checklist.lista_id,
 
-  resultado:
-    checklist.resultado,
+    vin:
+      checklist.vin,
 
-  hmc:
-    checklist.hmc,
+    resultado:
+      checklist.resultado,
 
-  soc:
-    checklist.soc,
+    hmc:
+      checklist.hmc,
 
-  data_bateria:
-    checklist.data_bateria,
+    soc:
+      checklist.soc,
 
-  fusivel:
-    checklist.fusivel,
+    data_bateria:
+      checklist.data_bateria,
 
-  pneu_di:
-  checklist.pneu_de,
+    fusivel:
+      checklist.fusivel,
 
-  pneu_dd:
-    checklist.pneu_dd,
+    pneu_di:
+      checklist.pneu_de,
 
-  pneu_te:
-    checklist.pneu_te,
+    pneu_dd:
+      checklist.pneu_dd,
 
-  pneu_td:
-    checklist.pneu_td,
+    pneu_te:
+      checklist.pneu_te,
 
-  observacao:
-    checklist.observacao,
+    pneu_td:
+      checklist.pneu_td,
 
-  data_inspecao:
-    checklist.data_inspecao,
+    observacao:
+      checklist.observacao,
+
+    data_inspecao:
+      checklist.data_inspecao,
 });
+
 alert(
   JSON.stringify(resultado)
 );
 
-if (error) {
+if (resultado.error) {
+
   console.log(
     "ERRO SUPABASE",
-    error
+    resultado.error
   );
 
   alert(
-    JSON.stringify(error)
+    JSON.stringify(
+      resultado.error
+    )
   );
 }
 
+if (!resultado.error) {
 
-        if (!error) {
+  await marcarComoEnviado(
+    checklist.vin
+  );
 
-          await marcarComoEnviado(
-            checklist.vin
-          );
-
-          enviados++;
-        }
+  enviados++;
+}
       }
 
       alert(
