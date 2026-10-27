@@ -5,6 +5,7 @@ import {
   obterChecklistsPendentes,
   marcarComoEnviado,
   limparBancoOffline,
+  limparChecklistsOffline,
 } from "../services/cqeOffline";
 
 
@@ -303,6 +304,12 @@ if (erroChecklists) {
     "Erro ao carregar checklists."
   );
   return;
+}
+
+if (
+  (checklists || []).length === 0
+) {
+  await limparChecklistsOffline();
 }
       await salvarListas(
         listas || []

@@ -487,6 +487,37 @@ updateRequest.onerror =
     }
   );
 }
+
+export async function limparChecklistsOffline() {
+
+  const db =
+    await abrirBanco();
+
+  return new Promise(
+    (resolve, reject) => {
+
+      const tx =
+        db.transaction(
+          "checklists",
+          "readwrite"
+        );
+
+      tx.objectStore(
+        "checklists"
+      ).clear();
+
+      tx.oncomplete =
+        () => resolve();
+
+      tx.onerror =
+        () =>
+          reject(
+            tx.error
+          );
+    }
+  );
+}
+
 export async function limparBancoOffline() {
 
   const db =
