@@ -11,6 +11,9 @@ import VPCCQEHome from "./pages/VPCCQEHome.jsx";
 import VPCCQEVeiculos from "./pages/VPCCQEVeiculos.jsx";
 import VPCCQEChecklist from "./pages/VPCCQEChecklist.jsx";
 import VPCCQEAdmin from "./pages/VPCCQEAdmin.jsx";
+import VPCCQEMobile from "./pages/VPCCQEMOBILE.jsx";
+
+
 
 function App() {
   const [tela, setTela] =
@@ -72,7 +75,13 @@ const [perfil, setPerfil] =
     />
   );
 }
-
+if (tela === "vpccqe-mobile") {
+  return (
+    <VPCCQEMobile
+      setTela={setTela}
+    />
+  );
+}
   if (tela === "vpccqe-veiculos") {
     return (
       <VPCCQEVeiculos

@@ -184,6 +184,37 @@ export default function Portal({
               </span>
             </button>
           </div>
+
+                    <div>
+            <button
+              onClick={() =>
+                setTela(
+                  "vpccqe-mobile"
+                )
+              }
+              style={
+                cardStyle
+              }
+            >
+              📱 VPCCQE MOBILE
+
+              <br />
+              <br />
+
+              <span
+                style={{
+                  fontSize:
+                    "16px",
+                  color:
+                    "#666",
+                }}
+              >
+                Sincronização
+                <br />
+                e Envio de Dados
+              </span>
+            </button>
+          </div>
         </>
       )}
 
@@ -254,4 +285,5 @@ export default function Portal({
       )}
     </div>
   );
+  
 }
