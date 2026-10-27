@@ -351,11 +351,13 @@ await salvarVeiculos(
 const enviarInformacao =
   async () => {
 
+
     try {
 
       const pendentes =
         await obterChecklistsPendentes();
 
+      
       if (
         pendentes.length === 0
       ) {
@@ -389,7 +391,7 @@ const enviarInformacao =
               checklist.soc,
 
             data_bateria:
-              checklist.data_bateria,
+  checklist.data_bateria || null,
 
             fusivel:
               checklist.fusivel,
@@ -412,6 +414,16 @@ const enviarInformacao =
             data_inspecao:
               checklist.data_inspecao,
           });
+
+console.log(
+  "CHECKLIST",
+  checklist
+);
+
+console.log(
+  "RESULTADO",
+  resultado
+);
 
         if (!resultado.error) {
 
