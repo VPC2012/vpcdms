@@ -415,15 +415,6 @@ const enviarInformacao =
               checklist.data_inspecao,
           });
 
-console.log(
-  "CHECKLIST",
-  checklist
-);
-
-console.log(
-  "RESULTADO",
-  resultado
-);
 
         if (!resultado.error) {
 
@@ -455,7 +446,7 @@ console.log(
   width: "100%",
   padding: "14px",
   borderRadius: "12px",
-  border: "1px solid #d9d9d9",
+  border: "1px solid #dfe6ee",
   marginBottom: "10px",
   fontSize: "16px",
   fontWeight: "600",
@@ -463,7 +454,7 @@ console.log(
   backgroundColor: "#ffffff",
   color: "#002C5F",
   boxShadow:
-    "0 2px 6px rgba(0,0,0,0.08)",
+    "0 2px 6px rgba(0,0,0,0.05)",
 };
 
   return (
@@ -511,14 +502,7 @@ console.log(
           VPCCQE ADMIN
         </h2>
 
-        <p
-          style={{
-            color: "#666",
-            marginTop: "5px",
-          }}
-        >
-          Gestão de Campanhas
-        </p>
+        
       </div>
 
 
@@ -548,29 +532,19 @@ console.log(
         onClick={
           selecionarArquivo
         }
-        style={{
-          ...estiloBotao,
-          backgroundColor:
-            "#002C5F",
-          color: "#fff",
-        }}
+       style={estiloBotao}
       >
         📥 IMPORTAR LISTA
       </button>
 
       <button
-        onClick={
-          baixarModeloVPCCQE
-        }
-        style={{
-          ...estiloBotao,
-          backgroundColor:
-            "#1976d2",
-          color: "#fff",
-        }}
-      >
-        📄 BAIXAR MODELO
-      </button>
+  onClick={
+    baixarModeloVPCCQE
+  }
+  style={estiloBotao}
+>
+  📄 BAIXAR MODELO
+</button>
 
 <h3
   style={{
@@ -582,19 +556,14 @@ console.log(
   📊 Resultados
 </h3>
 
-      <button
-        onClick={
-          exportarVPCCQEExcel
-        }
-        style={{
-          ...estiloBotao,
-          backgroundColor:
-            "#2e7d32",
-          color: "#fff",
-        }}
-      >
-        📤 EXPORTAR RESULTADO
-      </button>
+    <button
+  onClick={
+    exportarVPCCQEExcel
+  }
+  style={estiloBotao}
+>
+  📤 EXPORTAR RESULTADO
+</button> 
 
 <h3
   style={{
@@ -603,18 +572,18 @@ console.log(
     marginBottom: "10px",
   }}
 >
-  🛠 Administração
+💻 Administração
 </h3>
 
-      <button
+  <button
   onClick={
     limparBancoGeral
   }
   style={{
     ...estiloBotao,
-    backgroundColor:
-      "#c62828",
-    color: "#fff",
+    backgroundColor: "#fff5f5",
+    border: "1px solid #ffbdbd",
+    color: "#c62828",
   }}
 >
   🗑 LIMPAR BANCO DE DADOS GERAL
