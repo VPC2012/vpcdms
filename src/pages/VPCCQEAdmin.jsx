@@ -452,15 +452,19 @@ console.log(
   };
 
   const estiloBotao = {
-    width: "100%",
-    padding: "18px",
-    borderRadius: "16px",
-    border: "none",
-    marginBottom: "15px",
-    fontSize: "18px",
-    fontWeight: "bold",
-    cursor: "pointer",
-  };
+  width: "100%",
+  padding: "14px",
+  borderRadius: "12px",
+  border: "1px solid #d9d9d9",
+  marginBottom: "10px",
+  fontSize: "16px",
+  fontWeight: "600",
+  cursor: "pointer",
+  backgroundColor: "#ffffff",
+  color: "#002C5F",
+  boxShadow:
+    "0 2px 6px rgba(0,0,0,0.08)",
+};
 
   return (
     <div
@@ -517,6 +521,17 @@ console.log(
         </p>
       </div>
 
+
+<h3
+  style={{
+    color: "#002C5F",
+    marginBottom: "10px",
+  }}
+>
+  📂 Arquivos
+</h3>
+
+
       <input
         type="file"
         accept=".xlsx,.xls"
@@ -557,6 +572,16 @@ console.log(
         📄 BAIXAR MODELO
       </button>
 
+<h3
+  style={{
+    color: "#002C5F",
+    marginTop: "20px",
+    marginBottom: "10px",
+  }}
+>
+  📊 Resultados
+</h3>
+
       <button
         onClick={
           exportarVPCCQEExcel
@@ -570,6 +595,16 @@ console.log(
       >
         📤 EXPORTAR RESULTADO
       </button>
+
+<h3
+  style={{
+    color: "#8B0000",
+    marginTop: "20px",
+    marginBottom: "10px",
+  }}
+>
+  🛠 Administração
+</h3>
 
       <button
   onClick={
@@ -585,33 +620,8 @@ console.log(
   🗑 LIMPAR BANCO DE DADOS GERAL
 </button>
 
-<button
-  onClick={
-    atualizarListaCQE
-  }
-  style={{
-    ...estiloBotao,
-    backgroundColor:
-      "#002C5F",
-    color: "#fff",
-  }}
->
-🔄 SINCRONIZAR DADOS
-  
-</button>
-<button
-  onClick={
-    enviarInformacao
-  }
-  style={{
-    ...estiloBotao,
-    backgroundColor:
-      "#2e7d32",
-    color: "#fff",
-  }}
->
-  ☁️ ENVIAR INFORMAÇÃO
-</button>
+
+
 
 </div>
 );
