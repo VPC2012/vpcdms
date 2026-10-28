@@ -1,6 +1,224 @@
+import {
+  salvarListas,
+  salvarVeiculos,
+  obterChecklistsPendentes,
+  marcarComoEnviado,
+  limparChecklistsOffline,
+} from "../services/cqeOffline";
+
+import { supabase } from "../services/supabase";
+
 export default function VPCCQEMobile({
   setTela,
 }) {
+
+  const atualizarListaCQE =
+    async () => {
+
+      const pendentes =
+        await obterChecklistsPendentes();
+
+      if (
+        pendentes.length > 0
+      ) {
+        alert(
+          `⚠️ Existem ${pendentes.length} checklists pendentes de envio.\n\nEnvie as informações antes de sincronizar os dados.`
+        );
+        return;
+      }
+
+      try {
+
+        const {
+          data: listas,
+          error: erroListas,
+        } = await supabase
+          .from("vpccqe_listas")
+          .select("*");
+
+        if (erroListas) {
+          alert(
+            "Erro ao carregar listas."
+          );
+          return;
+        }
+
+        const {
+          data: veiculos,
+          error: erroVeiculos,
+        } = await supabase
+          .from(
+            "vpccqe_lista_veiculos"
+          )
+          .select("*");
+
+        if (erroVeiculos) {
+          alert(
+            "Erro ao carregar veículos."
+          );
+          return;
+        }
+
+        const {
+          data: checklists,
+          error: erroChecklists,
+        } = await supabase
+          .from("vpccqe_checklist")
+          .select("*");
+
+        if (erroChecklists) {
+          alert(
+            "Erro ao carregar checklists."
+          );
+          return;
+        }
+
+        if (
+          (checklists || [])
+            .length === 0
+        ) {
+          await limparChecklistsOffline();
+        }
+
+        await salvarListas(
+          listas || []
+        );
+
+        const veiculosAtualizados =
+          (veiculos || []).map(
+            (veiculo) => ({
+              ...veiculo,
+              inspecionado:
+                (
+                  checklists || []
+                ).some(
+                  (
+                    checklist
+                  ) =>
+                    checklist.vin ===
+                    veiculo.vin
+                ),
+            })
+          );
+
+        await salvarVeiculos(
+          veiculosAtualizados
+        );
+
+        alert(
+          `✅ Dados sincronizados com sucesso.\n\n${veiculos.length} veículos carregados.`
+        );
+
+      } catch (erro) {
+
+        console.error(
+          erro
+        );
+
+        alert(
+          "Erro ao sincronizar dados."
+        );
+      }
+    };
+
+  const enviarInformacao =
+    async () => {
+
+      try {
+
+        const pendentes =
+          await obterChecklistsPendentes();
+
+        if (
+          pendentes.length === 0
+        ) {
+          alert(
+            "Nenhum checklist pendente para envio."
+          );
+          return;
+        }
+
+        let enviados = 0;
+
+        for (
+          const checklist of pendentes
+        ) {
+
+          const resultado =
+            await supabase
+              .from(
+                "vpccqe_checklist"
+              )
+              .upsert({
+                lista_id:
+                  checklist.lista_id,
+
+                vin:
+                  checklist.vin,
+
+                resultado:
+                  checklist.resultado,
+
+                hmc:
+                  checklist.hmc,
+
+                soc:
+                  checklist.soc,
+
+                data_bateria:
+                  checklist.data_bateria ||
+                  null,
+
+                fusivel:
+                  checklist.fusivel,
+
+                pneu_di:
+                  checklist.pneu_de,
+
+                pneu_dd:
+                  checklist.pneu_dd,
+
+                pneu_te:
+                  checklist.pneu_te,
+
+                pneu_td:
+                  checklist.pneu_td,
+
+                observacao:
+                  checklist.observacao,
+
+                data_inspecao:
+                  checklist.data_inspecao,
+              });
+
+          if (
+            !resultado.error
+          ) {
+
+            await marcarComoEnviado(
+              checklist.vin
+            );
+
+            enviados++;
+          }
+        }
+
+        alert(
+          `✅ ${enviados} checklists enviados com sucesso.`
+        );
+
+      } catch (erro) {
+
+        console.error(
+          erro
+        );
+
+        alert(
+          "Erro ao enviar informações."
+        );
+      }
+    };
+
   const estiloBotao = {
     width: "100%",
     padding: "14px",
@@ -20,9 +238,11 @@ export default function VPCCQEMobile({
     <div
       style={{
         padding: "15px",
-        backgroundColor: "#f4f4f4",
+        backgroundColor:
+          "#f4f4f4",
         minHeight: "100vh",
-        fontFamily: "Arial, sans-serif",
+        fontFamily:
+          "Arial, sans-serif",
         maxWidth: "700px",
         margin: "0 auto",
       }}
@@ -69,13 +289,24 @@ export default function VPCCQEMobile({
         🔄 Comunicação
       </h3>
 
-      <button style={estiloBotao}>
+      <button
+        onClick={
+          enviarInformacao
+        }
+        style={estiloBotao}
+      >
         ☁️ ENVIAR INFORMAÇÃO
       </button>
 
-      <button style={estiloBotao}>
+      <button
+        onClick={
+          atualizarListaCQE
+        }
+        style={estiloBotao}
+      >
         🔄 SINCRONIZAR DADOS
       </button>
+
     </div>
   );
 }
