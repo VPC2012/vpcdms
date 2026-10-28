@@ -93,6 +93,10 @@ if (erroListas) {
         FUSIVEL:
           checklist?.fusivel || "",
 
+        TURNO:
+  checklist?.turno || "",
+
+
         PNEU_DE:
           checklist?.pneu_de || "",
 

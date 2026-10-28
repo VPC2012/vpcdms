@@ -172,6 +172,9 @@ export default function VPCCQEMobile({
                 fusivel:
                   checklist.fusivel,
 
+                  turno:
+                checklist.turno,
+
                 pneu_di:
                   checklist.pneu_de,
 

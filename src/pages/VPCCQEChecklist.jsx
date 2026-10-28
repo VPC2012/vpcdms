@@ -45,6 +45,9 @@ export default function VPCCQEChecklist({
   const [fusivel, setFusivel] =
     useState("Conectado");
 
+    const [turno, setTurno] =
+  useState("1º Turno");
+
   const [
     pneuDianteiroEsquerdo,
     setPneuDianteiroEsquerdo,
@@ -97,6 +100,12 @@ async function carregarChecklist() {
     checklist.fusivel ||
       "Conectado"
   );
+
+
+setTurno(
+  checklist.turno ||
+    "1º Turno"
+);
 
   setPneuDianteiroEsquerdo(
     checklist.pneu_de || ""
@@ -159,6 +168,8 @@ const salvarChecklist =
           dataBateria,
 
         fusivel,
+
+        turno,
 
         pneu_de:
           pneuDianteiroEsquerdo,
@@ -342,6 +353,37 @@ await marcarVeiculoInspecionado(
             N/A
           </option>
         </select>
+
+<p>Turno</p>
+
+<select
+  value={turno}
+  onChange={(e) =>
+    setTurno(
+      e.target.value
+    )
+  }
+  style={{
+    width: "100%",
+  }}
+>
+  <option>
+    1º Turno
+  </option>
+
+  <option>
+    2º Turno
+  </option>
+
+  <option>
+    3º Turno
+  </option>
+
+  <option>
+    ADM
+  </option>
+</select>
+
       </div>
 
       <div
