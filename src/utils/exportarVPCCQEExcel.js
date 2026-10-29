@@ -77,9 +77,9 @@ if (erroListas) {
           veiculo.cor,
 
         INSPECIONADO:
-          veiculo.inspecionado
-            ? "SIM"
-            : "NÃO",
+  checklist
+    ? "SIM"
+    : "NÃO",
 
         HMC:
           checklist?.hmc || "",
