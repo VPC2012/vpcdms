@@ -594,7 +594,7 @@ const enviarInformacao =
         style={{
           textAlign: "center",
           marginTop: "15px",
-          marginBottom: "25px",
+          marginBottom: "15px",
         }}
       >
         <h1
@@ -742,12 +742,73 @@ const enviarInformacao =
 
     Defeitos
   </div>
-</div>
-        
-      </div>
 
+</div>
+
+<div
+  style={{
+    background: "#fff",
+    borderRadius: "12px",
+    padding: "15px",
+    marginBottom: "20px",
+    boxShadow:
+      "0 2px 6px rgba(0,0,0,0.05)",
+  }}
+>
+  <h3
+    style={{
+      marginTop: 0,
+      color: "#002C5F",
+    }}
+  >
+    📊 Inspecionados por Turno
+  </h3>
+
+  {dashboard.turno1 > 0 && (
+    <p>
+      1º Turno:
+      <strong>
+        {" "}
+        {dashboard.turno1}
+      </strong>
+    </p>
+  )}
+
+  {dashboard.turno2 > 0 && (
+    <p>
+      2º Turno:
+      <strong>
+        {" "}
+        {dashboard.turno2}
+      </strong>
+    </p>
+  )}
+
+  {dashboard.turno3 > 0 && (
+    <p>
+      3º Turno:
+      <strong>
+        {" "}
+        {dashboard.turno3}
+      </strong>
+    </p>
+  )}
+
+  {dashboard.turnoADM > 0 && (
+    <p>
+      ADM:
+      <strong>
+        {" "}
+        {dashboard.turnoADM}
+      </strong>
+    </p>
+  )}
+</div>
+
+</div>
 
 <h3
+
   style={{
     color: "#002C5F",
     marginBottom: "10px",
