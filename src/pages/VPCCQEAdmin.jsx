@@ -9,7 +9,12 @@ import {
 } from "../services/cqeOffline";
 
 
-import { useRef } from "react";
+import {
+  useRef,
+  useState,
+  useEffect,
+} from "react";
+
 import * as XLSX from "xlsx";
 import { supabase } from "../services/supabase";
 
@@ -27,6 +32,23 @@ export default function VPCCQEAdmin({
 }) {
   const fileInputRef =
     useRef(null);
+
+
+const [dashboard, setDashboard] =
+  useState({
+    total: 0,
+    inspecionados: 0,
+    pendentes: 0,
+    defeitos: 0,
+    turno1: 0,
+    turno2: 0,
+    turno3: 0,
+    turnoADM: 0,
+  });
+
+  useEffect(() => {
+  carregarDashboard();
+}, []);
 
   const selecionarArquivo =
     () => {
@@ -442,6 +464,96 @@ const enviarInformacao =
     }
   };
 
+  const carregarDashboard =
+  async () => {
+
+    try {
+
+      const {
+        data: veiculos,
+      } = await supabase
+        .from(
+          "vpccqe_lista_veiculos"
+        )
+        .select("*");
+
+      const {
+        data: checklists,
+      } = await supabase
+        .from(
+          "vpccqe_checklist"
+        )
+        .select("*");
+
+      const total =
+        veiculos?.length || 0;
+
+      const inspecionados =
+        new Set(
+          (checklists || []).map(
+            (item) => item.vin
+          )
+        ).size;
+
+      const pendentes =
+        total -
+        inspecionados;
+
+      const defeitos =
+        (checklists || []).filter(
+          (item) =>
+            item.resultado ===
+            "Não"
+        ).length;
+
+      const turno1 =
+        (checklists || []).filter(
+          (item) =>
+            item.turno ===
+            "1º Turno"
+        ).length;
+
+      const turno2 =
+        (checklists || []).filter(
+          (item) =>
+            item.turno ===
+            "2º Turno"
+        ).length;
+
+      const turno3 =
+        (checklists || []).filter(
+          (item) =>
+            item.turno ===
+            "3º Turno"
+        ).length;
+
+      const turnoADM =
+        (checklists || []).filter(
+          (item) =>
+            item.turno ===
+            "ADM"
+        ).length;
+
+      setDashboard({
+        total,
+        inspecionados,
+        pendentes,
+        defeitos,
+        turno1,
+        turno2,
+        turno3,
+        turnoADM,
+      });
+
+    } catch (erro) {
+
+      console.error(
+        erro
+      );
+
+    }
+  };
+
   const estiloBotao = {
   width: "100%",
   padding: "14px",
@@ -501,7 +613,136 @@ const enviarInformacao =
         >
           VPCCQE ADMIN
         </h2>
+<div
+  style={{
+    display: "grid",
+    gridTemplateColumns:
+      "repeat(2, 1fr)",
+    gap: "10px",
+    marginTop: "25px",
+    marginBottom: "25px",
+  }}
+>
+  <div
+    style={{
+      background: "#fff",
+      padding: "12px",
+      borderRadius: "12px",
+      boxShadow:
+        "0 2px 6px rgba(0,0,0,0.05)",
+    }}
+  >
+    <div
+      style={{
+        fontSize: "24px",
+      }}
+    >
+      🚗
+    </div>
 
+    <strong
+      style={{
+        fontSize: "22px",
+      }}
+    >
+      {dashboard.total}
+    </strong>
+
+    <br />
+
+    Total
+  </div>
+
+  <div
+    style={{
+      background: "#fff",
+      padding: "12px",
+      borderRadius: "12px",
+      boxShadow:
+        "0 2px 6px rgba(0,0,0,0.05)",
+    }}
+  >
+    <div
+      style={{
+        fontSize: "24px",
+      }}
+    >
+      ✅
+    </div>
+
+    <strong
+      style={{
+        fontSize: "22px",
+      }}
+    >
+      {dashboard.inspecionados}
+    </strong>
+
+    <br />
+
+    Inspecionados
+  </div>
+
+  <div
+    style={{
+      background: "#fff",
+      padding: "12px",
+      borderRadius: "12px",
+      boxShadow:
+        "0 2px 6px rgba(0,0,0,0.05)",
+    }}
+  >
+    <div
+      style={{
+        fontSize: "24px",
+      }}
+    >
+      ⏳
+    </div>
+
+    <strong
+      style={{
+        fontSize: "22px",
+      }}
+    >
+      {dashboard.pendentes}
+    </strong>
+
+    <br />
+
+    Pendentes
+  </div>
+
+  <div
+    style={{
+      background: "#fff",
+      padding: "12px",
+      borderRadius: "12px",
+      boxShadow:
+        "0 2px 6px rgba(0,0,0,0.05)",
+    }}
+  >
+    <div
+      style={{
+        fontSize: "24px",
+      }}
+    >
+      ⚠️
+    </div>
+
+    <strong
+      style={{
+        fontSize: "22px",
+      }}
+    >
+      {dashboard.defeitos}
+    </strong>
+
+    <br />
+
+    Defeitos
+  </div>
+</div>
         
       </div>
 
