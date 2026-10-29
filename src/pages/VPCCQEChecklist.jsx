@@ -139,6 +139,100 @@ const salvarChecklist =
 
     try {
 
+      if (!dataBateria) {
+  alert(
+    "⚠ Data da bateria é obrigatória."
+  );
+  return;
+}
+
+if (!hmc) {
+  alert(
+    "⚠ Informe o HMC."
+  );
+  return;
+}
+
+if (
+  !/^[0-9]+$/.test(hmc)
+) {
+  alert(
+    "⚠ HMC deve conter apenas números."
+  );
+  return;
+}
+
+if (soc === "") {
+  alert(
+    "⚠ Informe o SOC."
+  );
+  return;
+}
+
+if (
+  isNaN(Number(soc)) ||
+  Number(soc) < 0 ||
+  Number(soc) > 100
+) {
+  alert(
+    "⚠ SOC deve estar entre 0 e 100."
+  );
+  return;
+}
+
+if (
+  pneuDianteiroEsquerdo === "" ||
+  pneuDianteiroDireito === "" ||
+  pneuTraseiroEsquerdo === "" ||
+  pneuTraseiroDireito === ""
+) {
+  alert(
+    "⚠ Informe a pressão de todos os pneus."
+  );
+  return;
+}
+
+const pneus = [
+  {
+    nome: "Pneu DE",
+    valor:
+      pneuDianteiroEsquerdo,
+  },
+  {
+    nome: "Pneu DD",
+    valor:
+      pneuDianteiroDireito,
+  },
+  {
+    nome: "Pneu TE",
+    valor:
+      pneuTraseiroEsquerdo,
+  },
+  {
+    nome: "Pneu TD",
+    valor:
+      pneuTraseiroDireito,
+  },
+];
+
+for (const pneu of pneus) {
+
+  if (
+    isNaN(
+      Number(pneu.valor)
+    ) ||
+    Number(pneu.valor) < 0 ||
+    Number(pneu.valor) > 100
+  ) {
+
+    alert(
+      `⚠ ${pneu.nome} deve estar entre 0 e 100.`
+    );
+
+    return;
+  }
+}
+
       const listaId =
         Number(
           localStorage.getItem(
