@@ -593,12 +593,17 @@ const percentual =
       }}
     >
       <button
-        onClick={() =>
-          setTela("portal")
-        }
-      >
-        ← Voltar
-      </button>
+  onClick={() =>
+    setTela("portal")
+  }
+  style={{
+    position: "absolute",
+    top: "10px",
+    left: "10px",
+  }}
+>
+  ← Voltar
+</button>
 
       <div
         style={{
@@ -623,20 +628,22 @@ const percentual =
         >
           VPCCQE ADMIN
         </h2>
+
 <div
   style={{
     display: "grid",
     gridTemplateColumns:
       "repeat(2, 1fr)",
-    gap: "10px",
-    marginTop: "25px",
-    marginBottom: "25px",
+    gap: "8px",
+    marginTop: "12px",
+    marginBottom: "10px",
   }}
 >
+
   <div
     style={{
       background: "#fff",
-      padding: "12px",
+      padding: "8px",
       borderRadius: "12px",
       boxShadow:
         "0 2px 6px rgba(0,0,0,0.05)",
@@ -644,7 +651,7 @@ const percentual =
   >
     <div
       style={{
-        fontSize: "24px",
+        fontSize: "18px",
       }}
     >
       🚗
@@ -652,7 +659,7 @@ const percentual =
 
     <strong
       style={{
-        fontSize: "22px",
+        fontSize: "18px",
       }}
     >
       {dashboard.total}
@@ -666,7 +673,7 @@ const percentual =
   <div
     style={{
       background: "#fff",
-      padding: "12px",
+      padding: "8px",
       borderRadius: "12px",
       boxShadow:
         "0 2px 6px rgba(0,0,0,0.05)",
@@ -674,7 +681,7 @@ const percentual =
   >
     <div
       style={{
-        fontSize: "24px",
+        fontSize: "18px",
       }}
     >
       ✅
@@ -682,7 +689,7 @@ const percentual =
 
     <strong
       style={{
-        fontSize: "22px",
+        fontSize: "18px",
       }}
     >
       {dashboard.inspecionados}
@@ -696,7 +703,7 @@ const percentual =
   <div
     style={{
       background: "#fff",
-      padding: "12px",
+      padding: "8px",
       borderRadius: "12px",
       boxShadow:
         "0 2px 6px rgba(0,0,0,0.05)",
@@ -704,7 +711,7 @@ const percentual =
   >
     <div
       style={{
-        fontSize: "24px",
+        fontSize: "18px",
       }}
     >
       ⏳
@@ -712,7 +719,7 @@ const percentual =
 
     <strong
       style={{
-        fontSize: "22px",
+        fontSize: "18px",
       }}
     >
       {dashboard.pendentes}
@@ -726,7 +733,7 @@ const percentual =
   <div
     style={{
       background: "#fff",
-      padding: "12px",
+      padding: "8px",
       borderRadius: "12px",
       boxShadow:
         "0 2px 6px rgba(0,0,0,0.05)",
@@ -734,7 +741,7 @@ const percentual =
   >
     <div
       style={{
-        fontSize: "24px",
+        fontSize: "18px",
       }}
     >
       ⚠️
@@ -742,7 +749,7 @@ const percentual =
 
     <strong
       style={{
-        fontSize: "22px",
+        fontSize: "18px",
       }}
     >
       {dashboard.defeitos}
@@ -759,8 +766,8 @@ const percentual =
   style={{
     background: "#fff",
     borderRadius: "12px",
-    padding: "15px",
-    marginBottom: "20px",
+    padding: "10px",
+    marginBottom: "10px",
     boxShadow:
       "0 2px 6px rgba(0,0,0,0.05)",
   }}
@@ -821,8 +828,8 @@ const percentual =
   style={{
     background: "#fff",
     borderRadius: "12px",
-    padding: "15px",
-    marginBottom: "15px",
+    padding: "10px",
+    marginBottom: "10px",
     boxShadow:
       "0 2px 6px rgba(0,0,0,0.05)",
   }}
