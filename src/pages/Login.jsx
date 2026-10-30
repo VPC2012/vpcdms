@@ -10,15 +10,21 @@ export default function Login({
   const entrar = () => {
 
     if (
-      senha === "operacao2026"
+      senha === "op2026"
     ) {
 
       localStorage.setItem(
-        "perfil",
-        "operacao"
-      );
+  "perfil",
+  "operacao"
+);
 
-      setTela("portal");
+localStorage.setItem(
+  "telaAtual",
+  "portal"
+);
+
+setTela("portal");
+return;
       return;
     }
 
@@ -26,12 +32,18 @@ export default function Login({
       senha === "admin2026"
     ) {
 
-      localStorage.setItem(
-        "perfil",
-        "admin"
-      );
+     localStorage.setItem(
+  "perfil",
+  "admin"
+);
 
-      setTela("portal");
+localStorage.setItem(
+  "telaAtual",
+  "portal"
+);
+
+setTela("portal");
+return;
       return;
     }
 
@@ -162,7 +174,7 @@ export default function Login({
           </h2>
 
           <input
-            type="password"
+  type="text"
             placeholder="Digite sua senha"
             value={senha}
             onChange={(e) =>

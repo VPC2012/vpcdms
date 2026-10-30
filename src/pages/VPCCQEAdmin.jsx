@@ -511,8 +511,10 @@ const percentual =
       const defeitos =
   (checklists || []).filter(
     (item) =>
-      item.resultado ===
-      "Não"
+      String(
+        item.resultado
+      ).trim().toUpperCase() ===
+      "SIM"
   ).length;
 
       const turno1 =

@@ -13,11 +13,14 @@ import VPCCQEChecklist from "./pages/VPCCQEChecklist.jsx";
 import VPCCQEAdmin from "./pages/VPCCQEAdmin.jsx";
 import VPCCQEMobile from "./pages/VPCCQEMOBILE.jsx";
 
-
-
 function App() {
-  const [tela, setTela] =
-  useState("login");
+
+const [tela, setTela] =
+  useState(
+    localStorage.getItem(
+      "telaAtual"
+    ) || "login"
+  );
 
 const [perfil, setPerfil] =
   useState("");
