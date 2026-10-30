@@ -1,3 +1,10 @@
+import {
+  Camera,
+  CameraResultType,
+  CameraSource,
+} from "@capacitor/camera";
+
+
 import { useEffect, useState } from "react";
 import {
   salvarChecklist as salvarChecklistOffline,
@@ -148,6 +155,61 @@ setTurno(
       ""
   );
 }
+
+const capturarFoto =
+  async (tipo) => {
+
+    try {
+
+      const foto =
+        await Camera.getPhoto({
+          quality: 80,
+          allowEditing: false,
+          resultType:
+            CameraResultType.DataUrl,
+          source:
+            CameraSource.Camera,
+        });
+
+      if (!foto?.dataUrl)
+        return;
+
+      if (
+        tipo ===
+        "Identificação"
+      ) {
+        setFotoIdentificacao(
+          foto.dataUrl
+        );
+      }
+
+      if (
+        tipo ===
+        "Foto Geral"
+      ) {
+        setFotoGeral(
+          foto.dataUrl
+        );
+      }
+
+      if (
+        tipo ===
+        "Foto Detalhe"
+      ) {
+        setFotoDetalhe(
+          foto.dataUrl
+        );
+      }
+
+    } catch (erro) {
+
+      console.error(
+        erro
+      );
+
+    }
+
+  };
 
 const salvarChecklist =
   async () => {
@@ -622,7 +684,11 @@ await marcarVeiculoInspecionado(
 {/* NOVA SEÇÃO DE EVIDÊNCIAS */}
 
 <div
-  style={{
+  onClick={() =>
+    capturarFoto(
+      "Foto Geral"
+    )
+  }  style={{
     background: "#fff",
     borderRadius: "16px",
     padding: "20px",
@@ -639,17 +705,102 @@ await marcarVeiculoInspecionado(
     Registro opcional de evidências.
   </p>
 
-  <button>
-    📷 Identificação
-  </button>
+  <div
+  onClick={() =>
+    capturarFoto(
+      "Identificação"
+    )
+  }
+  style={{
+    background: "#f8f8f8",
+    border: "1px solid #ddd",
+    borderRadius: "12px",
+    padding: "15px",
+    marginBottom: "12px",
+    textAlign: "center",
+    cursor: "pointer",
+  }}
+>
+  <h3>
+  📷 Identificação
+</h3>
 
-  <button>
+{
+  fotoIdentificacao ? (
+    <p
+      style={{
+        color: "green",
+        fontWeight: "bold",
+      }}
+    >
+      ✅ Foto registrada
+    </p>
+  ) : (
+    <p
+      style={{
+        color: "#666",
+      }}
+    >
+      Nenhuma foto registrada
+    </p>
+  )
+}
+</div>
+
+<div
+  onClick={() =>
+    capturarFoto(
+      "Foto Geral"
+    )
+  }
+  style={{
+    background: "#f8f8f8",
+    border: "1px solid #ddd",
+    borderRadius: "12px",
+    padding: "15px",
+    marginBottom: "12px",
+    textAlign: "center",
+  }}
+>
+  <h3>
     📷 Foto Geral
-  </button>
+  </h3>
 
-  <button>
+  <p
+    style={{
+      color: "#666",
+    }}
+  >
+    Nenhuma foto registrada
+  </p>
+</div>
+
+<div
+  onClick={() =>
+    capturarFoto(
+      "Foto Geral"
+    )
+  }
+  style={{
+    background: "#f8f8f8",
+    border: "1px solid #ddd",
+    borderRadius: "12px",
+    padding: "15px",
+    textAlign: "center",
+  }}
+>
+  <h3>
     📷 Foto Detalhe
-  </button>
+  </h3>
+
+  <p
+    style={{
+      color: "#666",
+    }}
+  >
+    Nenhuma foto registrada
+  </p>
+</div>
 </div>
 
 <button
