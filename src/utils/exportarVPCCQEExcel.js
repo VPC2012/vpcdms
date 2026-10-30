@@ -109,8 +109,12 @@ if (erroListas) {
         PNEU_TD:
           checklist?.pneu_td || "",
 
-        RESULTADO:
-          checklist?.resultado || "",
+        DEFEITO:
+  checklist?.resultado === "Sim"
+    ? "COM DEFEITO"
+    : checklist?.resultado === "Não"
+    ? "SEM DEFEITO"
+    : "",
 
         OBSERVACAO:
           checklist?.observacao || "",

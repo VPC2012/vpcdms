@@ -509,11 +509,11 @@ const percentual =
     : 0;
 
       const defeitos =
-        (checklists || []).filter(
-          (item) =>
-            item.resultado ===
-            "Não"
-        ).length;
+  (checklists || []).filter(
+    (item) =>
+      item.resultado ===
+      "Não"
+  ).length;
 
       const turno1 =
         (checklists || []).filter(
