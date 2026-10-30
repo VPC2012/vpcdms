@@ -74,6 +74,21 @@ export default function VPCCQEChecklist({
   const [observacao, setObservacao] =
     useState("");
 
+    const [
+  fotoIdentificacao,
+  setFotoIdentificacao,
+] = useState(null);
+
+const [
+  fotoGeral,
+  setFotoGeral,
+] = useState(null);
+
+const [
+  fotoDetalhe,
+  setFotoDetalhe,
+] = useState(null);
+
 useEffect(() => {
   carregarChecklist();
 }, [vin]);
@@ -601,12 +616,47 @@ await marcarVeiculoInspecionado(
             width: "100%",
           }}
         />
-      </div>
+      
+</div>
 
-      <button
-        onClick={
-          salvarChecklist
-        }
+{/* NOVA SEÇÃO DE EVIDÊNCIAS */}
+
+<div
+  style={{
+    background: "#fff",
+    borderRadius: "16px",
+    padding: "20px",
+    marginBottom: "20px",
+    boxShadow:
+      "0 4px 10px rgba(0,0,0,0.10)",
+  }}
+>
+  <h2>
+    📷 Evidências Fotográficas
+  </h2>
+
+  <p>
+    Registro opcional de evidências.
+  </p>
+
+  <button>
+    📷 Identificação
+  </button>
+
+  <button>
+    📷 Foto Geral
+  </button>
+
+  <button>
+    📷 Foto Detalhe
+  </button>
+</div>
+
+<button
+  onClick={
+    salvarChecklist
+  }
+
         style={{
           width: "100%",
           background:
