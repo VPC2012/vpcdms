@@ -40,6 +40,7 @@ const [dashboard, setDashboard] =
     inspecionados: 0,
     pendentes: 0,
     defeitos: 0,
+    percentual: 0,
     turno1: 0,
     turno2: 0,
     turno3: 0,
@@ -499,6 +500,14 @@ const enviarInformacao =
         total -
         inspecionados;
 
+const percentual =
+  total > 0
+    ? Math.round(
+        (inspecionados * 100) /
+          total
+      )
+    : 0;
+
       const defeitos =
         (checklists || []).filter(
           (item) =>
@@ -539,6 +548,7 @@ const enviarInformacao =
         inspecionados,
         pendentes,
         defeitos,
+        percentual,
         turno1,
         turno2,
         turno3,
@@ -805,6 +815,66 @@ const enviarInformacao =
   )}
 </div>
 
+</div>
+
+<div
+  style={{
+    background: "#fff",
+    borderRadius: "12px",
+    padding: "15px",
+    marginBottom: "15px",
+    boxShadow:
+      "0 2px 6px rgba(0,0,0,0.05)",
+  }}
+>
+  <h3
+    style={{
+      marginTop: 0,
+      marginBottom: "10px",
+      color: "#002C5F",
+    }}
+  >
+    📈 Progresso da Inspeção
+  </h3>
+
+  <p
+    style={{
+      marginBottom: "10px",
+    }}
+  >
+    {dashboard.inspecionados}
+    {" / "}
+    {dashboard.total}
+    {" veículos"}
+  </p>
+
+  <div
+    style={{
+      width: "100%",
+      height: "14px",
+      background: "#ddd",
+      borderRadius: "20px",
+    }}
+  >
+    <div
+      style={{
+        width: `${dashboard.percentual}%`,
+        height: "14px",
+        background: "#002C5F",
+        borderRadius: "20px",
+      }}
+    />
+  </div>
+
+  <p
+    style={{
+      marginTop: "8px",
+      textAlign: "center",
+      fontWeight: "bold",
+    }}
+  >
+    {dashboard.percentual}%
+  </p>
 </div>
 
 <h3
