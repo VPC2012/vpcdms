@@ -727,14 +727,28 @@ await marcarVeiculoInspecionado(
 
 {
   fotoIdentificacao ? (
-    <p
-      style={{
-        color: "green",
-        fontWeight: "bold",
-      }}
-    >
-      ✅ Foto registrada
-    </p>
+    <>
+      <img
+        src={fotoIdentificacao}
+        alt="Identificação"
+        style={{
+          width: "100%",
+          maxHeight: "180px",
+          objectFit: "cover",
+          borderRadius: "12px",
+          marginBottom: "10px",
+        }}
+      />
+
+      <p
+        style={{
+          color: "green",
+          fontWeight: "bold",
+        }}
+      >
+        ✅ Foto registrada
+      </p>
+    </>
   ) : (
     <p
       style={{
@@ -745,6 +759,7 @@ await marcarVeiculoInspecionado(
     </p>
   )
 }
+
 </div>
 
 <div
@@ -760,25 +775,53 @@ await marcarVeiculoInspecionado(
     padding: "15px",
     marginBottom: "12px",
     textAlign: "center",
+    cursor: "pointer",
   }}
 >
   <h3>
     📷 Foto Geral
   </h3>
 
-  <p
-    style={{
-      color: "#666",
-    }}
-  >
-    Nenhuma foto registrada
-  </p>
+  {
+    fotoGeral ? (
+      <>
+        <img
+          src={fotoGeral}
+          alt="Foto Geral"
+          style={{
+            width: "100%",
+            maxHeight: "180px",
+            objectFit: "cover",
+            borderRadius: "12px",
+            marginBottom: "10px",
+          }}
+        />
+
+        <p
+          style={{
+            color: "green",
+            fontWeight: "bold",
+          }}
+        >
+          ✅ Foto registrada
+        </p>
+      </>
+    ) : (
+      <p
+        style={{
+          color: "#666",
+        }}
+      >
+        Nenhuma foto registrada
+      </p>
+    )
+  }
 </div>
 
 <div
   onClick={() =>
     capturarFoto(
-      "Foto Geral"
+      "Foto Detalhe"
     )
   }
   style={{
@@ -787,20 +830,49 @@ await marcarVeiculoInspecionado(
     borderRadius: "12px",
     padding: "15px",
     textAlign: "center",
+    cursor: "pointer",
   }}
 >
   <h3>
     📷 Foto Detalhe
   </h3>
 
-  <p
-    style={{
-      color: "#666",
-    }}
-  >
-    Nenhuma foto registrada
-  </p>
+  {
+    fotoDetalhe ? (
+      <>
+        <img
+          src={fotoDetalhe}
+          alt="Foto Detalhe"
+          style={{
+            width: "100%",
+            maxHeight: "180px",
+            objectFit: "cover",
+            borderRadius: "12px",
+            marginBottom: "10px",
+          }}
+        />
+
+        <p
+          style={{
+            color: "green",
+            fontWeight: "bold",
+          }}
+        >
+          ✅ Foto registrada
+        </p>
+      </>
+    ) : (
+      <p
+        style={{
+          color: "#666",
+        }}
+      >
+        Nenhuma foto registrada
+      </p>
+    )
+  }
 </div>
+
 </div>
 
 <button
