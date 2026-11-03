@@ -419,7 +419,7 @@ const enviarInformacao =
             fusivel:
               checklist.fusivel,
 
-            pneu_di:
+            pneu_de:
               checklist.pneu_de,
 
             pneu_dd:
