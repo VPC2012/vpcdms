@@ -684,11 +684,7 @@ await marcarVeiculoInspecionado(
 {/* NOVA SEÇÃO DE EVIDÊNCIAS */}
 
 <div
-  onClick={() =>
-    capturarFoto(
-      "Foto Geral"
-    )
-  }  style={{
+  style={{
     background: "#fff",
     borderRadius: "16px",
     padding: "20px",
@@ -818,6 +814,10 @@ await marcarVeiculoInspecionado(
   }
 </div>
 
+
+
+</div>
+
 <div
   onClick={() =>
     capturarFoto(
@@ -829,6 +829,7 @@ await marcarVeiculoInspecionado(
     border: "1px solid #ddd",
     borderRadius: "12px",
     padding: "15px",
+    marginBottom: "12px",
     textAlign: "center",
     cursor: "pointer",
   }}
@@ -871,8 +872,6 @@ await marcarVeiculoInspecionado(
       </p>
     )
   }
-</div>
-
 </div>
 
 <button
