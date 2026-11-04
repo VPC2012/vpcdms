@@ -92,6 +92,11 @@ export default function VPCCQEChecklist({
 ] = useState(null);
 
 const [
+  arquivoIdentificacao,
+  setArquivoIdentificacao,
+] = useState(null);
+
+const [
   fotoGeral,
   setFotoGeral,
 ] = useState(null);
@@ -190,6 +195,10 @@ const capturarFoto =
     "IDENTIFICACAO",
     foto.dataUrl
   );
+  
+setArquivoIdentificacao(
+  arquivo
+);
 
 console.log(
   "Arquivo salvo:",
