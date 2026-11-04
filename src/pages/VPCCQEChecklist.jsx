@@ -184,11 +184,17 @@ const capturarFoto =
   "Identificação"
 ) {
 
+  const arquivo =
   await salvarFoto(
     vin,
     "IDENTIFICACAO",
     foto.dataUrl
   );
+
+console.log(
+  "Arquivo salvo:",
+  arquivo
+);
 
   setFotoIdentificacao(
     foto.dataUrl
