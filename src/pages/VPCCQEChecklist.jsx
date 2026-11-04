@@ -12,6 +12,11 @@ import {
   obterChecklistPorVin,
 } from "../services/cqeOffline";
 
+import {
+  salvarFoto,
+  obterFoto,
+} from "../services/cqeEvidencias";
+
 export default function VPCCQEChecklist({
   setTela,
 }) {
@@ -175,13 +180,20 @@ const capturarFoto =
         return;
 
       if (
-        tipo ===
-        "Identificação"
-      ) {
-        setFotoIdentificacao(
-          foto.dataUrl
-        );
-      }
+  tipo ===
+  "Identificação"
+) {
+
+  await salvarFoto(
+    vin,
+    "IDENTIFICACAO",
+    foto.dataUrl
+  );
+
+  setFotoIdentificacao(
+    foto.dataUrl
+  );
+}
 
       if (
         tipo ===
