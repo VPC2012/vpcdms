@@ -98,7 +98,7 @@ if (erroListas) {
 
 
         PNEU_DE:
-          checklist?.pneu_de || "",
+          checklist?.pneu_di || "",
 
         PNEU_DD:
           checklist?.pneu_dd || "",
