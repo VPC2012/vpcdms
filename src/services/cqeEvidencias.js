@@ -56,3 +56,25 @@ export async function obterFoto(
 
   }
 }
+export async function excluirFoto(
+  nomeArquivo
+) {
+  try {
+
+    if (!nomeArquivo)
+      return;
+
+    await Filesystem.deleteFile({
+      path: nomeArquivo,
+      directory: Directory.Data,
+    });
+
+  } catch (erro) {
+
+    console.error(
+      "Erro ao excluir foto:",
+      erro
+    );
+
+  }
+}

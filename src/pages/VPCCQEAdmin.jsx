@@ -6,8 +6,12 @@ import {
   marcarComoEnviado,
   limparBancoOffline,
   limparChecklistsOffline,
+  obterChecklists,
 } from "../services/cqeOffline";
 
+import {
+  excluirFoto,
+} from "../services/cqeEvidencias";
 
 import {
   useRef,
@@ -263,6 +267,25 @@ const [dashboard, setDashboard] =
     "Erro ao resetar listas."
   );
   return;
+}
+
+const checklists =
+  await obterChecklists();
+
+for (const checklist of checklists) {
+
+  await excluirFoto(
+    checklist.foto_identificacao
+  );
+
+  await excluirFoto(
+    checklist.foto_geral
+  );
+
+  await excluirFoto(
+    checklist.foto_detalhe
+  );
+
 }
 
 await limparBancoOffline();
