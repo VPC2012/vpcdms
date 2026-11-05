@@ -91,6 +91,7 @@ export default function VPCCQEChecklist({
   setFotoIdentificacao,
 ] = useState(null);
 
+
 const [
   arquivoIdentificacao,
   setArquivoIdentificacao,
@@ -115,6 +116,28 @@ async function carregarChecklist() {
     await obterChecklistPorVin(vin);
 
   if (!checklist) return;
+
+  if (
+  checklist.foto_identificacao
+) {
+
+  const foto =
+    await obterFoto(
+      checklist.foto_identificacao
+    );
+
+  if (foto) {
+
+    setFotoIdentificacao(
+      foto
+    );
+
+    setArquivoIdentificacao(
+      checklist.foto_identificacao
+    );
+
+  }
+}
 
   setHmc(
     checklist.hmc || ""
@@ -195,7 +218,7 @@ const capturarFoto =
     "IDENTIFICACAO",
     foto.dataUrl
   );
-  
+
 setArquivoIdentificacao(
   arquivo
 );
@@ -356,6 +379,9 @@ for (const pneu of pneus) {
 
         vaga,
 
+foto_identificacao:
+  arquivoIdentificacao,
+        
         resultado: defeito,
 
         hmc,
