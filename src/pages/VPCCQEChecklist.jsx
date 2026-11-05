@@ -103,8 +103,18 @@ const [
 ] = useState(null);
 
 const [
+  arquivoGeral,
+  setArquivoGeral,
+] = useState(null);
+
+const [
   fotoDetalhe,
   setFotoDetalhe,
+] = useState(null);
+
+const [
+  arquivoDetalhe,
+  setArquivoDetalhe,
 ] = useState(null);
 
 useEffect(() => {
@@ -138,6 +148,51 @@ async function carregarChecklist() {
 
   }
 }
+
+if (
+  checklist.foto_geral
+) {
+
+  const foto =
+    await obterFoto(
+      checklist.foto_geral
+    );
+
+  if (foto) {
+
+    setFotoGeral(
+      foto
+    );
+
+    setArquivoGeral(
+      checklist.foto_geral
+    );
+
+  }
+}
+
+if (
+  checklist.foto_detalhe
+) {
+
+  const foto =
+    await obterFoto(
+      checklist.foto_detalhe
+    );
+
+  if (foto) {
+
+    setFotoDetalhe(
+      foto
+    );
+
+    setArquivoDetalhe(
+      checklist.foto_detalhe
+    );
+
+  }
+}
+
 
   setHmc(
     checklist.hmc || ""
@@ -234,22 +289,46 @@ console.log(
 }
 
       if (
-        tipo ===
-        "Foto Geral"
-      ) {
-        setFotoGeral(
-          foto.dataUrl
-        );
-      }
+  tipo ===
+  "Foto Geral"
+) {
 
-      if (
-        tipo ===
-        "Foto Detalhe"
-      ) {
-        setFotoDetalhe(
-          foto.dataUrl
-        );
-      }
+  const arquivo =
+    await salvarFoto(
+      vin,
+      "GERAL",
+      foto.dataUrl
+    );
+
+  setArquivoGeral(
+    arquivo
+  );
+
+  setFotoGeral(
+    foto.dataUrl
+  );
+}
+
+     if (
+  tipo ===
+  "Foto Detalhe"
+) {
+
+  const arquivo =
+    await salvarFoto(
+      vin,
+      "DETALHE",
+      foto.dataUrl
+    );
+
+  setArquivoDetalhe(
+    arquivo
+  );
+
+  setFotoDetalhe(
+    foto.dataUrl
+  );
+}
 
     } catch (erro) {
 
@@ -381,6 +460,12 @@ for (const pneu of pneus) {
 
 foto_identificacao:
   arquivoIdentificacao,
+
+  foto_geral:
+  arquivoGeral,
+
+foto_detalhe:
+  arquivoDetalhe,
         
         resultado: defeito,
 
