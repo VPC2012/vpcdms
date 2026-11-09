@@ -398,11 +398,7 @@ await salvarVeiculos(
     }
   };
 
-const enviarInformacao =
-  async () => {
-
-
-    const compilarImagens =
+const compilarImagens =
   async () => {
 
     try {
@@ -432,6 +428,11 @@ const enviarInformacao =
     }
 
   };
+
+
+const enviarInformacao =
+  async () => {
+
 
     try {
 
