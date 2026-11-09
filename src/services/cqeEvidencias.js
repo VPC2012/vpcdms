@@ -10,8 +10,27 @@ export async function salvarFoto(
 ) {
   try {
 
-    const nomeArquivo =
-      `${vin}_${tipo}.jpg`;
+    const agora =
+  new Date();
+
+const data =
+  `${agora.getFullYear()}${String(
+    agora.getMonth() + 1
+  ).padStart(2, "0")}${String(
+    agora.getDate()
+  ).padStart(2, "0")}`;
+
+const hora =
+  `${String(
+    agora.getHours()
+  ).padStart(2, "0")}${String(
+    agora.getMinutes()
+  ).padStart(2, "0")}${String(
+    agora.getSeconds()
+  ).padStart(2, "0")}`;
+
+const nomeArquivo =
+  `${vin}_${tipo}_${data}_${hora}.jpg`;
 
     const base64 =
       dataUrl.split(",")[1];
