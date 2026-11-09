@@ -10,6 +10,10 @@ import {
 } from "../services/cqeOffline";
 
 import {
+  listarImagensCompilacao,
+} from "../services/cqeCompilacao";
+
+import {
   excluirFoto,
 } from "../services/cqeEvidencias";
 
@@ -398,6 +402,37 @@ const enviarInformacao =
   async () => {
 
 
+    const compilarImagens =
+  async () => {
+
+    try {
+
+      const imagens =
+        await listarImagensCompilacao();
+
+      alert(
+        `✅ ${imagens.length} imagens encontradas.`
+      );
+
+      console.log(
+        "Imagens compiladas:",
+        imagens
+      );
+
+    } catch (erro) {
+
+      console.error(
+        erro
+      );
+
+      alert(
+        "Erro ao compilar imagens."
+      );
+
+    }
+
+  };
+
     try {
 
       const pendentes =
@@ -420,6 +455,15 @@ const enviarInformacao =
         const resultado = await supabase
           .from("vpccqe_checklist")
           .upsert({
+
+foto_identificacao:
+  checklist.foto_identificacao,
+
+foto_geral:
+  checklist.foto_geral,
+
+foto_detalhe:
+  checklist.foto_detalhe,
 
             lista_id:
               checklist.lista_id,
@@ -968,6 +1012,15 @@ const percentual =
 >
   📤 EXPORTAR RESULTADO
 </button> 
+
+<button
+  onClick={
+    compilarImagens
+  }
+  style={estiloBotao}
+>
+  📦 COMPILAR IMAGENS
+</button>
 
 <h3
   style={{
