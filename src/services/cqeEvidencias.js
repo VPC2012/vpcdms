@@ -97,3 +97,60 @@ export async function excluirFoto(
 
   }
 }
+
+export async function copiarFoto(
+  origem,
+  destino
+) {
+  try {
+
+    const arquivo =
+      await Filesystem.readFile({
+        path: origem,
+        directory: Directory.Data,
+      });
+
+    await Filesystem.writeFile({
+      path: destino,
+      data: arquivo.data,
+      directory: Directory.Data,
+    });
+
+    return true;
+
+  } catch (erro) {
+
+    console.error(
+      "Erro ao copiar foto:",
+      erro
+    );
+
+    return false;
+
+  }
+}
+
+export async function lerFotoBase64(
+  nomeArquivo
+) {
+  try {
+
+    const arquivo =
+      await Filesystem.readFile({
+        path: nomeArquivo,
+        directory: Directory.Data,
+      });
+
+    return arquivo.data;
+
+  } catch (erro) {
+
+    console.error(
+      "Erro ao ler foto:",
+      erro
+    );
+
+    return null;
+
+  }
+}

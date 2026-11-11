@@ -10,7 +10,7 @@ import {
 } from "../services/cqeOffline";
 
 import {
-  listarImagensCompilacao,
+  compilarImagens,
 } from "../services/cqeCompilacao";
 
 import {
@@ -398,22 +398,18 @@ await salvarVeiculos(
     }
   };
 
-const compilarImagens =
+
+const executarCompilacao =
   async () => {
 
     try {
 
-      const imagens =
-        await listarImagensCompilacao();
+      const resultado =
+        await compilarImagens();
 
       alert(
-        `✅ ${imagens.length} imagens encontradas.`
-      );
-
-      console.log(
-        "Imagens compiladas:",
-        imagens
-      );
+  `✅ ${resultado.total} imagens compiladas.\n\nArquivo:\n${resultado.arquivo}`
+);
 
     } catch (erro) {
 
@@ -428,6 +424,7 @@ const compilarImagens =
     }
 
   };
+
 
 
 const enviarInformacao =
@@ -1016,8 +1013,9 @@ const percentual =
 
 <button
   onClick={
-    compilarImagens
-  }
+  executarCompilacao
+}
+
   style={estiloBotao}
 >
   📦 COMPILAR IMAGENS

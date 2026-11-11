@@ -254,9 +254,10 @@ export async function salvarChecklist(
         );
 
       store.put({
-        ...checklist,
-        enviado: false,
-      });
+  ...checklist,
+  enviado: false,
+  imagens_compiladas: false,
+});
 
       tx.oncomplete =
         () => resolve();
@@ -558,4 +559,72 @@ export async function limparBancoOffline() {
           );
     }
   );
+}
+
+export async function obterChecklistsNaoCompilados() {
+
+  const todos =
+    await obterChecklists();
+
+  return todos.filter(
+    item =>
+      item.imagens_compiladas !== true
+  );
+
+}
+export async function marcarImagensCompiladas(
+  vin
+) {
+
+  const db =
+    await abrirBanco();
+
+  return new Promise(
+    (resolve, reject) => {
+
+      const tx =
+        db.transaction(
+          "checklists",
+          "readwrite"
+        );
+
+      const store =
+        tx.objectStore(
+          "checklists"
+        );
+
+      const request =
+        store.get(vin);
+
+      request.onsuccess =
+        () => {
+
+          const registro =
+            request.result;
+
+          if (!registro) {
+            resolve();
+            return;
+          }
+
+          registro.imagens_compiladas =
+            true;
+
+          store.put(
+            registro
+          );
+
+          resolve();
+
+        };
+
+      request.onerror =
+        () =>
+          reject(
+            request.error
+          );
+
+    }
+  );
+
 }

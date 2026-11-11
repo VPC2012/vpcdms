@@ -17,6 +17,7 @@
     "@capacitor/share": "^8.0.3",
     "@supabase/supabase-js": "^2.117.2",
     "file-saver": "^2.0.5",
+    "jszip": "^3.10.2",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "react-router-dom": "^7.18.4",
