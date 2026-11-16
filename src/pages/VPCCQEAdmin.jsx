@@ -9,9 +9,7 @@ import {
   obterChecklists,
 } from "../services/cqeOffline";
 
-import {
-  compilarImagens,
-} from "../services/cqeCompilacao";
+
 
 import {
   excluirFoto,
@@ -399,31 +397,7 @@ await salvarVeiculos(
   };
 
 
-const executarCompilacao =
-  async () => {
 
-    try {
-
-      const resultado =
-        await compilarImagens();
-
-      alert(
-  `✅ ${resultado.total} imagens compiladas.\n\nArquivo:\n${resultado.arquivo}`
-);
-
-    } catch (erro) {
-
-      console.error(
-        erro
-      );
-
-      alert(
-        "Erro ao compilar imagens."
-      );
-
-    }
-
-  };
 
 
 
@@ -1011,15 +985,7 @@ const percentual =
   📤 EXPORTAR RESULTADO
 </button> 
 
-<button
-  onClick={
-  executarCompilacao
-}
 
-  style={estiloBotao}
->
-  📦 COMPILAR IMAGENS
-</button>
 
 <h3
   style={{

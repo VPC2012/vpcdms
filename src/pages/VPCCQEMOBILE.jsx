@@ -6,7 +6,12 @@ import {
   limparChecklistsOffline,
 } from "../services/cqeOffline";
 
+import {
+  compilarImagens,
+} from "../services/cqeCompilacao";
+
 import { supabase } from "../services/supabase";
+
 
 export default function VPCCQEMobile({
   setTela,
@@ -237,6 +242,33 @@ export default function VPCCQEMobile({
       "0 2px 6px rgba(0,0,0,0.05)",
   };
 
+const executarCompilacao =
+  async () => {
+
+    try {
+
+      const resultado =
+        await compilarImagens();
+
+      alert(
+  `✅ ${resultado.total} imagens compiladas.\n\nZIP salvo em Documentos.\n\nArquivo:\n${resultado.arquivo}`
+);
+
+    } catch (erro) {
+
+      console.error(
+        erro
+      );
+
+      alert(
+        "Erro ao compilar imagens."
+      );
+
+    }
+
+  };
+
+
   return (
     <div
       style={{
@@ -300,6 +332,15 @@ export default function VPCCQEMobile({
       >
         ☁️ ENVIAR INFORMAÇÃO
       </button>
+
+<button
+  onClick={
+    executarCompilacao
+  }
+  style={estiloBotao}
+>
+  📦 COMPILAR IMAGENS
+</button>
 
       <button
         onClick={
